@@ -1,0 +1,3 @@
+rootProject.name = 'ProjectBuilder'
+
+include ':app'
