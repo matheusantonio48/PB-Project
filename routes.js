@@ -7,13 +7,13 @@ export default props => (
   <Router>
 
     <Scene key="root">
-    
-    <Scene key="TelaLogin"
+
+      <Scene key="TelaLogin"
         component={TelaLogin}
         hideNavBar={true} />
 
-    <Scene key="Splash"
-        component={Splash}
+      <Scene key="Splash"
+        component={Splash} 
         hideNavBar={true} />
 
     </Scene>

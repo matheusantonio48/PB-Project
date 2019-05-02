@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Actions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
+
+import { StatusBar, AsyncStorage } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
+
 import { Plataform } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import axios from '../services/axios';
 
 import {
     StyleSheet,
@@ -15,7 +20,67 @@ import {
 } from 'react-native';
 
 
+// http://179.107.43.8:8080/apiPb/api/login
 export default class telaLogin extends Component {
+    updateValue(text, field) {
+        if (field == 'texto') {
+            this.setState({
+                texto: text
+            })
+        }
+    }
+
+    static propTypes = {
+        navigation: PropTypes.shape({
+            navigate: PropTypes.func,
+            dispatch: PropTypes.func,
+        }).isRequired,
+    };
+
+    state = {
+        organizacao: '',
+        login: '',
+        senha: '',
+        erro: ''
+    }
+
+    handleOrganizationChange = (organizacao) => {
+        this.setState({ organizacao });
+    };
+
+    handleLoginChange = (login) => {
+        this.setState({ login });
+    };
+
+    handlePasswordChange = (senha) => {
+        this.setState({ senha });
+    };
+
+    handleSignInPress = async () => {
+        if (this.state.login.length === 0 || this.state.senha.length === 0) {
+            this.setState({ erro: 'Preencha usuário e senha para continuar!' }, () => false);
+        } else {
+            try {
+                const response = await axios.post('/login', {
+                    organizacao: this.state.organizacao,
+                    login: this.state.login,
+                    senha: this.state.senha
+                });
+
+                await AsyncStorage.setItem('@ProjectBuilder:token', response.data.token);
+
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Splash' }),
+                    ],
+                });
+                this.props.navigation.dispatch(resetAction);
+            } catch (err) {
+                this.setState({ erro: 'Houve um problema com o login, verifique suas credenciais.' });
+            }
+        }
+    };
 
     render() {
         return (
@@ -23,38 +88,47 @@ export default class telaLogin extends Component {
                 source={require("../img/background.png")}
                 style={estilo.imgBackground}>
                 <View style={estilo.principal}>
-               
+                    <StatusBar hidden />
                     <View style={estilo.header}>
-                    <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
-                     </View>
-                    
+                        <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
+                    </View>
+
                     <View style={estilo.body}>
 
                         <TextInput
                             style={estilo.entrada}
                             underlineColorAndroid='transparent'
+                            value={this.state.organizacao}
+                            onChangeText={this.handleOrganizationChange}
                             placeholder="ORGANIZAÇÃO"
                             placeholderTextColor="black" />
 
                         <TextInput
-
                             style={estilo.entrada}
                             underlineColorAndroid='transparent'
+                            value={this.state.login}
+                            onChangeText={this.handleLoginChange}
                             placeholder="LOGIN"
                             placeholderTextColor="black" />
 
                         <TextInput
-
+                            secureTextEntry={true}
                             style={estilo.entrada}
                             underlineColorAndroid='transparent'
+                            value={this.state.senha}
+                            onChangeText={this.handlePasswordChange}
                             placeholder="SENHA"
                             placeholderTextColor="black" />
 
-                        <TouchableOpacity onPress={() => { Actions.TelaMenu(); }} >
-                            <Image style={estilo.buttonStyle} source={require('../img/bt-entrar.png')} />
+                        <Text>{this.state.erro.length !== 0 && this.state.erro}</Text>
+
+                        <TouchableOpacity onPress={this.handleSignInPress} >
+                            <Image
+                                style={estilo.buttonStyle}
+                                source={require('../img/bt-entrar.png')} />
                         </TouchableOpacity>
                     </View>
-               
+
                 </View>
 
             </ImageBackground>
@@ -64,7 +138,7 @@ export default class telaLogin extends Component {
 }
 const estilo = StyleSheet.create({
     entrada: {
-        width: wp ('50%'),
+        width: wp('50%'),
         height: 55,
         borderColor: '#e0e0e0',
         borderWidth: 0,
@@ -81,10 +155,10 @@ const estilo = StyleSheet.create({
     },
 
     header: {
-        alignItems:'center',
+        alignItems: 'center',
         width: wp('80%'),
         height: hp('10%'),
-        marginTop: hp ('8%'),
+        marginTop: hp('8%'),
         justifyContent: 'center',
         margin: wp('10%')
     },
@@ -120,10 +194,10 @@ const estilo = StyleSheet.create({
         height: '100%',
         paddingTop: '3%',
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         flexDirection: 'column',
 
-      
+
     },
 
     buttonStyle: {
