@@ -41,7 +41,8 @@ export default class telaLogin extends Component {
         organizacao: '',
         login: '',
         senha: '',
-        erro: ''
+        erro: '',
+        data: ''
     }
 
     handleOrganizationChange = (organizacao) => {
@@ -58,16 +59,21 @@ export default class telaLogin extends Component {
 
     handleSignInPress = async () => {
         if (this.state.login.length === 0 || this.state.senha.length === 0) {
-            this.setState({ erro: 'Preencha usuário e senha para continuar!' }, () => false);
+            this.setState({ erro: 'Preencha usuário e senha para continuar.' }, () => false);
         } else {
             try {
-                const response = await axios.post('/login', {
-                    organizacao: this.state.organizacao,
-                    login: this.state.login,
-                    senha: this.state.senha
+                let url = '/login?apiName=' + this.state.organizacao + "/" + this.state.login + "&apiKey=" + this.state.senha;
+                console.log(url);
+                await axios.post(url).then(response => {
+                    this.state.data = response.data;
+                    console.log(response.data);
                 });
 
-                await AsyncStorage.setItem('@ProjectBuilder:token', response.data.token);
+                await AsyncStorage.setItem('@ProjectBuilder:token', this.state.data.access_token);
+
+                let teste = await AsyncStorage.getItem('@ProjectBuilder:token');
+
+                console.log(teste);
 
                 const resetAction = StackActions.reset({
                     index: 0,
@@ -120,7 +126,8 @@ export default class telaLogin extends Component {
                             placeholder="SENHA"
                             placeholderTextColor="black" />
 
-                        <Text>{this.state.erro.length !== 0 && this.state.erro}</Text>
+                        <Text
+                            style={estilo.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
 
                         <TouchableOpacity onPress={this.handleSignInPress} >
                             <Image
@@ -198,6 +205,10 @@ const estilo = StyleSheet.create({
         flexDirection: 'column',
 
 
+    },
+
+    mensagemErro: {
+        color: 'red'
     },
 
     buttonStyle: {
