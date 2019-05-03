@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { StatusBar, AsyncStorage } from 'react-native';
+
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import { Plataform } from 'react-native';
@@ -71,14 +72,10 @@ export default class telaLogin extends Component {
 
                 await AsyncStorage.setItem('@ProjectBuilder:token', this.state.data.access_token);
 
-                let teste = await AsyncStorage.getItem('@ProjectBuilder:token');
-
-                console.log(teste);
-
                 const resetAction = StackActions.reset({
                     index: 0,
                     actions: [
-                        NavigationActions.navigate({ routeName: 'Splash' }),
+                        NavigationActions.navigate({ routeName: 'TelaProjetos' }),
                     ],
                 });
                 this.props.navigation.dispatch(resetAction);
