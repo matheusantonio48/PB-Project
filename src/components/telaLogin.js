@@ -64,10 +64,10 @@ export default class telaLogin extends Component {
         } else {
             try {
                 let url = '/login?apiName=' + this.state.organizacao + "/" + this.state.login + "&apiKey=" + this.state.senha;
-                console.log(url);
+                // console.log(url);
                 await axios.post(url).then(response => {
                     this.state.data = response.data;
-                    console.log(response.data);
+                    // console.log(response.data);
                 });
 
                 await AsyncStorage.setItem('@ProjectBuilder:token', this.state.data.access_token);

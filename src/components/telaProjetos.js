@@ -26,6 +26,8 @@ export default class telaProjetos extends Component {
 
     state = {
         projetos: [],
+        projetosId: [],
+        componentes: []
     }
 
     async componentDidMount() {
@@ -33,7 +35,31 @@ export default class telaProjetos extends Component {
         axios.get('/v1/projeto/listar', { headers: { Authorization: 'Bearer ' + tokenPB } }).then(response => {
             // console.log("Token: " + tokenPB);
             this.setState({ projetos: response.data.lista });
-            console.log(this.state.projetos);
+            console.log(this.state.projetos[0].id);
+            // console.log(this.state.projetos);
+
+            this.state.projetos.forEach(function (projeto, index) {
+                console.log(projeto.id);
+            });
+
+            axios({
+                method: 'get',
+                url: '/v1/componente/listar',
+                headers: { Authorization: 'Bearer ' + tokenPB },
+                data: {
+                    "id": this.state.projetos[0].id
+                }
+            }).then(response => {
+                // console.log("Token: " + tokenPB);
+                // this.setState({ componentes: response.data.lista });
+                // console.log(response.data);
+                console.log(response.data);
+            }).catch(error => {
+                console.log('Error: ' + error);
+                // console.log("Token: " + tokenPB);
+            });
+
+
         }).catch(error => {
             console.log('Error: ' + error);
             // console.log("Token: " + tokenPB);
@@ -51,7 +77,6 @@ export default class telaProjetos extends Component {
     //             </View>
     //         )
     //     })
-
     // }
 
     render() {
@@ -59,11 +84,13 @@ export default class telaProjetos extends Component {
         return (
             <View>
                 {this.state.projetos.map((item, key) => (
-                    <Text key={key}> {item.nome} {item.inicioPrevisto} {item.fimPrevisto} </Text>
-
+                    <Text key={key}> Nome: {item.nome}
+                        - Início Previsto: {item.inicioPrevisto}
+                        - Fim Previsto: {item.fimPrevisto}
+                        - Início Real: {item.inicioReal}
+                        - Situação: {item.situacao} {"\n"} </Text>
                 )
                 )}
-
                 {/* {this.renderProjetos()} */}
             </View>
         );

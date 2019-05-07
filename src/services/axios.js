@@ -8,7 +8,7 @@ let tokenPB = AsyncStorage.getItem('@ProjectBuilder:token');
 
 const axios = Axios.create({
     baseURL: 'http://179.107.43.8:8080/apiPb/api',
-    headers: { headers: { Authorization: 'Bearer ' + tokenPB } }
+    headers: { Authorization: 'Bearer ' + tokenPB }
 });
 
 export default axios;
