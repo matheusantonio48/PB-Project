@@ -38,13 +38,12 @@ export default class telaProjetos extends Component {
         axios.get('/v1/projeto/listar', { headers: { Authorization: 'Bearer ' + tokenPB } })
             .then(response => {
                 this.setState({ projetos: response.data.lista });
-
                 this.state.projetos.forEach(function (projeto, index) {
                     console.log(projeto.id);
                     axios.post('/v1/componente/listar', { "id": projeto.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
                         .then(response => {
-                            this.setState({ componentes: response.data.lista });
                             console.log(response.data.lista)
+                            this.setState({ componentes: response.data.lista });
                         }).catch(error => {
                             console.log('Error: ' + error);
                         });
@@ -75,11 +74,14 @@ export default class telaProjetos extends Component {
         return (
             <View style={estilo.body}>
                 <Content padder>
+                    <View style={estilo.header}>
+                        <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
+                    </View>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
-                            style={{ borderRadius: 30, backgroundColor: 'white', margin: 5 }}>
+                            style={{ backgroundColor: 'white', marginBottom: 10}}>
                             <Collapse onPress={this.alteraLogo} >
-                                <CollapseHeader >
+                                <CollapseHeader style={{backgroundColor: '#dcdcdc'}}>
                                     <View>
                                         <View style={{
                                             flex: 1,
@@ -124,7 +126,27 @@ export default class telaProjetos extends Component {
                                                 }}>Situação: {item.situacao}
                                                 </Text>
                                             </View>
+
                                         </View>
+
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            paddingLeft: 0,
+                                            paddingTop: 8
+                                            
+                                        }}>
+                                            <View
+                                            style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                borderBottomColor: '#c1c1c1',
+                                                borderBottomWidth: 0.5,
+                                                width: '100%'
+                                            }}
+                                            />
+                                        </View>
+
 
                                         <View style={{
                                             flex: 1,
@@ -132,9 +154,8 @@ export default class telaProjetos extends Component {
                                             justifyContent: 'flex-end',
                                             paddingEnd: 20
                                         }}><Thumbnail style={{
-                                            width: wp('4%'),
-                                            height: hp('4%')
-                                        }} source={{ uri: 'https://cdn0.iconfinder.com/data/icons/mobile-set/154/plus-512.png' }} />
+                                            }}
+                                            source={require('../img/ico-abrir-box.png')} />
                                         </View>
                                     </View>
                                 </CollapseHeader>
@@ -142,6 +163,7 @@ export default class telaProjetos extends Component {
                                     flex: 1,
                                     flexDirection: 'column',
                                     justifyContent: 'flex-start',
+                                    paddingTop: 22,
                                     paddingLeft: 22
                                 }}>
                                     <View>
@@ -214,17 +236,16 @@ export default class telaProjetos extends Component {
 const estilo = StyleSheet.create({
     header: {
         alignItems: 'center',
-        width: wp('100%'),
-        height: hp('13%'),
-        marginTop: '0%',
-        backgroundColor: '#23282c',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        width: wp('80%'),
+        height: hp('10%'),
+        marginTop: hp('8%'),
+        justifyContent: 'center',
+        margin: wp('10%')
     },
     logo: {
-        width: '280%',
-        height: '280%',
-        resizeMode: 'contain'
+        width: wp('80%'),
+        height: hp('30%'),
+        resizeMode: 'contain',
     },
     principal: {
         flex: 4,

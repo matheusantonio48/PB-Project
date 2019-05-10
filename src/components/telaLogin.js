@@ -196,7 +196,7 @@ const estilo = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        paddingTop: '3%',
+        paddingTop: '1%',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
