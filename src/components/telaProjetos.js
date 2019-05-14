@@ -35,7 +35,7 @@ export default class telaProjetos extends Component {
     async componentDidMount() {
         updateState = (response) => {
             this.setState({ projetos: response });
-            console.log(this.state.projetos);
+            // console.log(this.state.projetos);
         }
         let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
         let projetoComp = [];
@@ -43,7 +43,7 @@ export default class telaProjetos extends Component {
             .then(response => {
                 //this.setState({ projetos: response.data.lista });
                 response.data.lista.forEach(function (projeto) {
-                    console.log(projeto.id);
+                    // console.log(projeto.id);
                     axios.post('/v1/componente/listar', { "id": projeto.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
                         .then(responseComp => {
                             projeto.componentes = responseComp.data.lista;
@@ -64,6 +64,62 @@ export default class telaProjetos extends Component {
 
 
     alteraLogo() {
+    }
+
+    renderCorSituacao = (situacao) => {
+        if (situacao === 3) {
+            return (
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+            );
+        } else if (situacao === 4) {
+            return (
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+            );
+        } else if (situacao === 7) {
+            return (
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+            );
+        } else if (situacao === 8) {
+            return (
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFFFF' }}></View>
+            );
+        } else if (situacao === 9) {
+            return (
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+            );
+        } else {
+            return (
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#000000' }}></View>
+            );
+        }
+    }
+
+    renderSituacao = (situacao) => {
+        if (situacao === 3) {
+            return (
+                <Text>Em Andamento</Text>
+            );
+        } else if (situacao === 4) {
+            return (
+                <Text>Concluído</Text>
+            );
+        } else if (situacao === 7) {
+            return (
+                <Text>Atraso</Text>
+            );
+        } else if (situacao === 8) {
+            return (
+                <Text>Pode iniciar</Text>
+            );
+        } else if (situacao === 9) {
+            return (
+                <Text>Parado</Text>
+            );
+        } else {
+            return (
+                <Text>Desconhecida</Text>
+            );
+        }
     }
 
     // POSSÍVEL SOLUÇÃO
@@ -119,12 +175,12 @@ export default class telaProjetos extends Component {
                                                 }}>Fim Previsto: {item.fimPrevisto}
                                                 </Text>
                                             </View>
-
+                                            {this.renderCorSituacao(item.situacao)}
                                             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                                                 <Text style={{
                                                     color: 'black',
                                                     fontSize: 12
-                                                }}>Situação: {item.situacao}
+                                                }}> {this.renderSituacao(item.situacao)}
                                                 </Text>
                                             </View>
 
@@ -194,12 +250,13 @@ export default class telaProjetos extends Component {
                                                     }}>Fim Previsto: {comp.fimPrevisto}
                                                     </Text>
                                                 </View>
-
+                                                {this.renderCorSituacao(comp.situacao)}
                                                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                                                     <Text style={{
                                                         color: 'black',
+                                                        paddingLeft: 10,
                                                         fontSize: 12
-                                                    }}>Situação: {comp.situacao}
+                                                    }}>{this.renderSituacao(comp.situacao)}
                                                     </Text>
                                                 </View>
 
