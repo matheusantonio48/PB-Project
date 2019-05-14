@@ -81,7 +81,7 @@ export default class telaProjetos extends Component {
             );
         } else if (situacao === 8) {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFFFF' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
             );
         } else if (situacao === 9) {
             return (
@@ -150,12 +150,12 @@ export default class telaProjetos extends Component {
                                             <Text style={{
                                                 color: 'black',
                                                 fontWeight: 'normal',
-                                                fontSize: 13
+                                                fontSize: 12
                                             }}>Projeto: </Text>
                                             <Text style={{
                                                 color: 'black',
                                                 fontWeight: 'bold',
-                                                fontSize: 14
+                                                fontSize: 13
                                             }}>{item.nome}{"\n"}
                                             </Text>
                                         </View>
@@ -179,7 +179,8 @@ export default class telaProjetos extends Component {
                                             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                                                 <Text style={{
                                                     color: 'black',
-                                                    fontSize: 12
+                                                    fontSize: 12,
+                                                    paddingLeft: 5
                                                 }}> {this.renderSituacao(item.situacao)}
                                                 </Text>
                                             </View>
