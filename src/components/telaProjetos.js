@@ -19,7 +19,6 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import { Drawer } from 'react-native-router-flux';
 
 export default class telaProjetos extends Component {
 
