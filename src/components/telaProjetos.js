@@ -9,16 +9,17 @@ import { StackActions, NavigationActions } from 'react-navigation';
 
 import axios from '../services/axios';
 
+import Loading from './loading';
+// import HeaderPB from './header';
+
 import {
     StyleSheet,
     View,
     Image,
     TouchableOpacity,
-    FlatList,
-    ImageBackground,
-    Text,
-    TextInput
+    Text
 } from 'react-native';
+import { Drawer } from 'react-native-router-flux';
 
 export default class telaProjetos extends Component {
 
@@ -27,7 +28,8 @@ export default class telaProjetos extends Component {
 
         this.state = {
             projetos: [],
-            componentes: []
+            componentes: [],
+            isLoading: false
         }
     }
 
@@ -35,31 +37,33 @@ export default class telaProjetos extends Component {
     async componentDidMount() {
         updateState = (response) => {
             this.setState({ projetos: response });
-            // console.log(this.state.projetos);
         }
+
+        updateLoad = () => {
+            setTimeout(() => { this.setState({ isLoading: !this.state.isLoading }) }, 2000)
+        }
+
         let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
         let projetoComp = [];
         axios.get('/v1/projeto/listar', { headers: { Authorization: 'Bearer ' + tokenPB } })
             .then(response => {
-                //this.setState({ projetos: response.data.lista });
                 response.data.lista.forEach(function (projeto) {
-                    // console.log(projeto.id);
                     axios.post('/v1/componente/listar', { "id": projeto.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
                         .then(responseComp => {
                             projeto.componentes = responseComp.data.lista;
-                            // teste.push({ proj: projeto, comp: responseComp.data.lista });
                             projetoComp.push(projeto);
                             updateState(projetoComp);
                         }).catch(error => {
                             console.log('Error: ' + error);
                         });
                 });
-                //this.setState({ projetos: teste });
             }).catch(error => {
                 console.log('Error: ' + error);
+            }).finally(function () {
+                updateLoad();
+                console.log('Entrou');
             });
-        console.log('Teste de fim de execução');
-        // console.log(this.state.projetos);
+        console.log(this.state.isLoading);
     }
 
 
@@ -122,90 +126,71 @@ export default class telaProjetos extends Component {
         }
     }
 
-    // POSSÍVEL SOLUÇÃO
-    // async renderComponentes() {
-    //      
-    // }
-
     render() {
         return (
             <View style={estilo.body}>
+                <Loading hide={this.state.isLoading}></Loading>
                 <Content padder>
                     <View style={estilo.header}>
                         <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
+                        {/* <HeaderPB /> */}
                     </View>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
                             style={{ backgroundColor: 'white', marginBottom: 10 }}>
                             <Collapse onPress={this.alteraLogo} >
-                                <CollapseHeader style={{ backgroundColor: '#dcdcdc' }}>
+                                <CollapseHeader style={{
+                                    backgroundColor: '#dcdcdc', paddingRight: '8%', paddingLeft: '8%', paddingTop: 8, paddingBottom: 5
+                                }}>
                                     <View>
                                         <View style={{
                                             flex: 1,
                                             flexDirection: 'row',
-                                            justifyContent: 'flex-start',
-                                            paddingLeft: 20,
-                                            paddingTop: 8
+                                            maxWidth: '90%'
                                         }}>
                                             <Text style={{
                                                 color: 'black',
                                                 fontWeight: 'normal',
-                                                fontSize: 12
+                                                fontSize: 14
                                             }}>Projeto: </Text>
                                             <Text style={{
                                                 color: 'black',
                                                 fontWeight: 'bold',
-                                                fontSize: 13
-                                            }}>{item.nome}{"\n"}
+                                                fontSize: 14
+                                            }}>{item.nome}
                                             </Text>
                                         </View>
 
                                         <View style={{
                                             flex: 1,
                                             flexDirection: 'row',
-                                            justifyContent: 'flex-start',
-                                            paddingLeft: 20,
-                                            paddingTop: 8
-
+                                            justifyContent: "space-around",
+                                            marginBottom: 10,
+                                            paddingBottom: 10,
+                                            paddingTop: 8,
+                                            borderBottomColor: '#c1c1c1',
+                                            borderBottomWidth: 1.0
                                         }}>
-                                            <View style={{ flex: 1, justifyContent: 'flex-start', marginStart: 0 }}>
+                                            <View>
                                                 <Text style={{
                                                     color: 'black',
                                                     fontSize: 12
                                                 }}>Fim Previsto: {item.fimPrevisto}
                                                 </Text>
                                             </View>
+
                                             {this.renderCorSituacao(item.situacao)}
-                                            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+
+                                            <View style={{ justifyContent: 'flex-start' }}>
                                                 <Text style={{
                                                     color: 'black',
                                                     fontSize: 12,
-                                                    paddingLeft: 5
-                                                }}> {this.renderSituacao(item.situacao)}
+                                                }}>
+                                                    {this.renderSituacao(item.situacao)}
                                                 </Text>
                                             </View>
 
                                         </View>
-
-                                        <View style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                            paddingLeft: 0,
-                                            paddingTop: 8
-
-                                        }}>
-                                            <View
-                                                style={{
-                                                    flex: 1,
-                                                    flexDirection: 'row',
-                                                    borderBottomColor: '#c1c1c1',
-                                                    borderBottomWidth: 0.5,
-                                                    width: '100%'
-                                                }}
-                                            />
-                                        </View>
-
-
                                         <View style={{
                                             flex: 1,
                                             flexDirection: 'row',
@@ -213,7 +198,7 @@ export default class telaProjetos extends Component {
                                             paddingEnd: 20,
                                             marginBottom: 10
                                         }}>
-                                            <Thumbnail style={{ width: 30, height: 30 }} source={require('../img/ico-abrir-box.png')} />
+                                            <Thumbnail style={{ width: 25, height: 25 }} source={require('../img/ico-abrir-box.png')} />
                                         </View>
                                     </View>
                                 </CollapseHeader>
@@ -239,10 +224,12 @@ export default class telaProjetos extends Component {
                                             <View style={{
                                                 flex: 1,
                                                 flexDirection: 'row',
-                                                justifyContent: 'flex-start',
-                                                paddingLeft: 20,
-                                                paddingTop: 8
-
+                                                justifyContent: "space-around",
+                                                marginBottom: 10,
+                                                paddingBottom: 10,
+                                                paddingTop: 8,
+                                                borderBottomColor: '#c1c1c1',
+                                                borderBottomWidth: 1.0
                                             }}>
                                                 <View style={{ flex: 1, justifyContent: 'flex-start', marginStart: 0 }}>
                                                     <Text style={{
@@ -251,13 +238,16 @@ export default class telaProjetos extends Component {
                                                     }}>Fim Previsto: {comp.fimPrevisto}
                                                     </Text>
                                                 </View>
+
                                                 {this.renderCorSituacao(comp.situacao)}
+
                                                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                                                     <Text style={{
                                                         color: 'black',
                                                         paddingLeft: 10,
                                                         fontSize: 12
-                                                    }}>{this.renderSituacao(comp.situacao)}
+                                                    }}>
+                                                        {this.renderSituacao(comp.situacao)}
                                                     </Text>
                                                 </View>
 
