@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { AsyncStorage } from 'react-native';
-import { Content, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
+import { Content, Footer, FooterTab, Container, Header, Left, Right, Body, Button, Icon, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
@@ -19,8 +20,16 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 export default class telaProjetos extends Component {
+    static propTypes = {
+        navigation: PropTypes.shape({
+            navigate: PropTypes.func,
+            dispatch: PropTypes.func,
+        }).isRequired,
+    };
+
 
     constructor(props) {
         super(props);
@@ -28,7 +37,9 @@ export default class telaProjetos extends Component {
         this.state = {
             projetos: [],
             componentes: [],
-            isLoading: false
+            isLoading: false,
+            nome: null
+            //aqui você vai adicionar o valor que você quer pegar dessa tela
         }
     }
 
@@ -125,15 +136,34 @@ export default class telaProjetos extends Component {
         }
     }
 
+    mudaTelaResumo = (comp) => {
+        Actions.TelaTarefasResumo({ comp: comp });
+        const resetAction = StackActions.reset({
+            index: 0,
+        });
+        // this.props.navigation.dispatch(resetAction);
+        //Actions.TelaTarefasResumo(aqui dentro você vai colocar o this.state com a informação que você pegou da parada que você clicou e quer retorna na outra tela) ah é, você tem que passar a informação com um parametro ;
+    }
+
     render() {
         return (
-            <View style={estilo.body}>
+            <Container>
                 <Loading hide={this.state.isLoading}></Loading>
-                <Content padder>
-                    <View style={estilo.header}>
-                        <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
-                        {/* <HeaderPB /> */}
-                    </View>
+                <Header style={{ backgroundColor: 'white' }}>
+                    <Left>
+                        <Button
+                            transparent
+                        >
+                            <Icon style={{ color: '#2768ab' }} name="menu" />
+                        </Button>
+                    </Left>
+                    <Body>
+                    </Body>
+                    <Right>
+                        <Image style={estilo.logoStyle} source={require('../img/logo-internas-pb.png')} />
+                    </Right>
+                </Header>
+                <Content padder style={{ width: wp('100%') }}>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
                             style={{ backgroundColor: 'white', marginBottom: 10 }}>
@@ -208,58 +238,77 @@ export default class telaProjetos extends Component {
                                     paddingTop: 22,
                                     paddingLeft: 22
                                 }}>
-
                                     {item.componentes.map((comp, key) => (
-                                        <View key={key} style={{ paddingTop: 20 }}>
-                                            <View>
+                                        //Aqui é onde você quer pegar as informações antes de mudar de tela
+                                        <TouchableOpacity onPress={() => this.mudaTelaResumo(comp)} key={key}>
+                                            <View style={{ paddingTop: 20 }}>
+                                                <View>
 
-                                                <Text style={{
-                                                    color: 'black',
-                                                    fontWeight: 'bold',
-                                                    fontSize: 16
-                                                }}>{comp.nome} </Text>
-                                            </View>
-
-                                            <View style={{
-                                                flex: 1,
-                                                flexDirection: 'row',
-                                                justifyContent: "space-around",
-                                                marginBottom: 10,
-                                                paddingBottom: 10,
-                                                paddingTop: 8,
-                                                borderBottomColor: '#c1c1c1',
-                                                borderBottomWidth: 1.0
-                                            }}>
-                                                <View style={{ flex: 1, justifyContent: 'flex-start', marginStart: 0 }}>
                                                     <Text style={{
                                                         color: 'black',
-                                                        fontSize: 12,
-                                                    }}>Fim Previsto: {comp.fimPrevisto}
-                                                    </Text>
+                                                        fontWeight: 'bold',
+                                                        fontSize: 16
+                                                    }}>{comp.nome} </Text>
                                                 </View>
 
-                                                {this.renderCorSituacao(comp.situacao)}
+                                                <View style={{
+                                                    flex: 1,
+                                                    flexDirection: 'row',
+                                                    justifyContent: "space-around",
+                                                    marginBottom: 10,
+                                                    paddingBottom: 10,
+                                                    paddingTop: 8,
+                                                    borderBottomColor: '#c1c1c1',
+                                                    borderBottomWidth: 1.0
+                                                }}>
+                                                    <View style={{ flex: 1, justifyContent: 'flex-start', marginStart: 0 }}>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: 12,
+                                                        }}>Fim Previsto: {comp.fimPrevisto}
+                                                        </Text>
+                                                    </View>
 
-                                                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                                                    <Text style={{
-                                                        color: 'black',
-                                                        paddingLeft: 10,
-                                                        fontSize: 12
-                                                    }}>
-                                                        {this.renderSituacao(comp.situacao)}
-                                                    </Text>
+                                                    {this.renderCorSituacao(comp.situacao)}
+
+                                                    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            paddingLeft: 10,
+                                                            fontSize: 12
+                                                        }}>
+                                                            {this.renderSituacao(comp.situacao)}
+                                                        </Text>
+                                                    </View>
+
                                                 </View>
-
                                             </View>
-                                        </View>
-
+                                        </TouchableOpacity>
                                     ))}
                                 </CollapseBody>
                             </Collapse>
                         </View>
                     ))}
                 </Content>
-            </View>
+
+                <Footer >
+                    <FooterTab style={{ backgroundColor: 'white' }}>
+                        <Button active={this.state.tab1}>
+                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab1} name="home" />
+                        </Button>
+                        <Button active={this.state.tab2}>
+                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab2} name="area-graph" />
+                        </Button>
+                        <Button active={this.state.tab3}>
+                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab3} name="contact" />
+                        </Button>
+                        <Button active={this.state.tab4}>
+                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab4} name="cog" />
+                        </Button>
+                    </FooterTab>
+                </Footer>
+
+            </Container>
         );
     }
 }
@@ -293,13 +342,6 @@ const estilo = StyleSheet.create({
         fontSize: 15,
         color: 'white'
     },
-    body: {
-        flex: 1,
-        justifyContent: 'space-evenly',
-        flexDirection: 'row',
-        flexWrap: "wrap",
-        alignItems: 'center'
-    },
     buttonStyle: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -316,6 +358,11 @@ const estilo = StyleSheet.create({
     logoFooter: {
         width: wp('35%'),
         height: hp('6%'),
+        resizeMode: 'contain'
+    },
+    logoStyle: {
+        width: wp('35%'),
+        height: hp('40%'),
         resizeMode: 'contain'
     },
     footer: {
