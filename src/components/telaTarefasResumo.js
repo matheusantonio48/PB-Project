@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import {
   Container,
@@ -158,48 +158,33 @@ class HeaderNB extends Component {
                 <Text>{this.props.comp.nome}</Text>
               </Body>
             </CardItem>
-            <CardItem header>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
+            <CardItem style={{ flexDirection: 'row', justifyContent: 'space-evenly' }} header>
+              <View>
                 <Text>Início Previsto: </Text>
                 <Text>{this.props.comp.inicioPrevisto}</Text>
-              </Body>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
+              </View>
+              <View>
                 <Text>Fim Previsto: </Text>
                 <Text>{this.props.comp.fimPrevisto}</Text>
-              </Body>
+              </View>
             </CardItem>
-            <CardItem style={{
-              borderBottomColor: '#c1c1c1',
-              borderBottomWidth: 1.0
-            }}>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>Situação: </Text>
-                {this.renderCorSituacao(this.props.comp.situacao)}
-                <Text style={{
-                  color: 'black',
-                  paddingLeft: 10
-                }}>
-                  {this.renderSituacao(this.props.comp.situacao)}
-                </Text>
-              </Body>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>Início real: </Text>
-                <Text>{this.props.comp.inicioReal}</Text>
-              </Body>
-            </CardItem>
-            
+         
+              <CardItem style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <View>
+                  <Text>Situação: </Text>
+                    <Text>
+                      {this.renderSituacao(this.props.comp.situacao)}
+                    </Text>
+                  {/*  <View>{this.renderCorSituacao(this.props.comp.situacao)}</View>*/}
+                </View>
+                <View>
+                  <Text>Início real: </Text>
+                  <Text>{this.props.comp.inicioReal}</Text>
+                </View>
+              </CardItem>
+
+          
+
             <CardItem header>
               <Body>
                 <Text>Escopo</Text>
