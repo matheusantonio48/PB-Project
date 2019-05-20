@@ -216,7 +216,7 @@ class HeaderNB extends Component {
             </CardItem>
             <CardItem style={{ justifyContent: 'space-around' }}>
               <Body>
-                <Text>Início</Text>
+                <Text style={{paddingLeft: '50%'}}>Início</Text>
               </Body>
               <Body>
                 <Text>Fim</Text>
@@ -236,7 +236,7 @@ class HeaderNB extends Component {
                 flexDirection: 'row'
               }}>
                 <Text>Previsto: </Text>
-                <Text>{this.props.comp.inicioPrevisto}</Text>
+                <Text style={{paddingLeft: '5%', paddingRight: '5%'}}>{this.props.comp.inicioPrevisto}</Text>
                 <Text>{this.props.comp.fimPrevisto}</Text>
               </Body>
             </CardItem>
@@ -249,7 +249,7 @@ class HeaderNB extends Component {
                 flexDirection: 'row'
               }}>
                 <Text>Real: </Text>
-                <Text>{this.props.comp.inicioReal}</Text>
+                <Text style={{ paddingLeft: '14%', paddingRight: '5%' }}>{this.props.comp.inicioReal}</Text>
                 <Text>{this.props.comp.fimReal}</Text>
               </Body>
             </CardItem>
