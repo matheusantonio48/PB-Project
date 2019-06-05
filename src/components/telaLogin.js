@@ -8,6 +8,8 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { Plataform } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+import { Container, Header, Content, Item, Input, Icon } from 'native-base';
+
 import axios from '../services/axios';
 
 import {
@@ -17,7 +19,8 @@ import {
     TouchableOpacity,
     ImageBackground,
     Text,
-    TextInput
+    TextInput,
+    KeyboardAvoidingView
 } from 'react-native';
 
 
@@ -43,8 +46,47 @@ export default class telaLogin extends Component {
         login: '',
         senha: '',
         erro: '',
-        data: ''
+        data: '',
+        borderColorOrganizacao: '#e5e5e5',
+        borderColorIdentificacao: '#e5e5e5',
+        borderColorSenha: '#e5e5e5'
     }
+
+    onFocusOrganizacao() {
+        this.setState({
+            borderColorOrganizacao: '#64d4ff'
+        })
+    }
+    
+    onFocusIdentificacao() {
+        this.setState({
+            borderColorIdentificacao: '#64d4ff'
+        })
+    }
+    onFocusSenha() {
+        this.setState({
+            borderColorSenha: '#64d4ff'
+        })
+    }
+    
+    onBlurOrganizacao() {
+        this.setState({
+            borderColorOrganizacao: '#e5e5e5'
+        })
+    }
+    
+    onBlurIdentificacao() {
+        this.setState({
+            borderColorIdentificacao: '#e5e5e5'
+        })
+    }
+    onBlurSenha() {
+        this.setState({
+            borderColorSenha: '#e5e5e5'
+        })
+    }
+
+
 
     handleOrganizationChange = (organizacao) => {
         this.setState({ organizacao });
@@ -95,42 +137,94 @@ export default class telaLogin extends Component {
                     <View style={estilo.header}>
                         <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
                     </View>
-
                     <View style={estilo.body}>
+                        <KeyboardAvoidingView>
+                            <Content>
+                                <Item>
+                                    <Image style={estilo.iconForm} source={require('../img/ico-login-organizacao.png')} />
+                                    <Input
+                                        style={{
+                                            width: wp('50%'),
+                                            paddingLeft: wp('5%'),
+                                            height: 55,
+                                            borderRadius: 10,
+                                            borderStyle: 'solid',
+                                            borderColor: this.state.borderColorOrganizacao,
+                                            borderWidth: 1,
+                                            marginTop: 10,
+                                            overflow: 'hidden',
+                                            fontSize: 16
+                                        }}
+                                        underlineColorAndroid='transparent'
+                                        value={this.state.organizacao}
+                                        onFocus={() => this.onFocusOrganizacao()}
+                                        onBlur={() => this.onBlurOrganizacao()}
+                                        onChangeText={this.handleOrganizationChange}
+                                        placeholder="Organização"
+                                        placeholderTextColor="#9d9d9d" />
+                                </Item>
 
-                        <TextInput
-                            style={estilo.entrada}
-                            underlineColorAndroid='transparent'
-                            value={this.state.organizacao}
-                            onChangeText={this.handleOrganizationChange}
-                            placeholder="ORGANIZAÇÃO"
-                            placeholderTextColor="black" />
+                                <Item>
+                                    <Image style={estilo.iconForm} source={require('../img/ico-login-identificacao.png')} />
+                                    <Input
+                                        style={{
+                                            width: wp('50%'),
+                                            paddingLeft: wp('5%'),
+                                            height: 55,
+                                            borderRadius: 10,
+                                            borderStyle: 'solid',
+                                            borderColor: this.state.borderColorIdentificacao,
+                                            borderWidth: 1,
+                                            marginTop: 10,
+                                            overflow: 'hidden',
+                                            fontSize: 16
+                                        }}
+                                        underlineColorAndroid='transparent'
+                                        value={this.state.login}
+                                        onFocus={() => this.onFocusIdentificacao()}
+                                        onBlur={() => this.onBlurIdentificacao()}
+                                        onChangeText={this.handleLoginChange}
+                                        placeholder="Identificação"
+                                        placeholderTextColor="#9d9d9d" />
 
-                        <TextInput
-                            style={estilo.entrada}
-                            underlineColorAndroid='transparent'
-                            value={this.state.login}
-                            onChangeText={this.handleLoginChange}
-                            placeholder="LOGIN"
-                            placeholderTextColor="black" />
+                                </Item>
 
-                        <TextInput
-                            secureTextEntry={true}
-                            style={estilo.entrada}
-                            underlineColorAndroid='transparent'
-                            value={this.state.senha}
-                            onChangeText={this.handlePasswordChange}
-                            placeholder="SENHA"
-                            placeholderTextColor="black" />
+                                <Item>
+                                    <Image style={estilo.iconForm} source={require('../img/ico-login-senha.png')} />
+                                    <Input
+                                        secureTextEntry={true}
+                                        style={{
+                                            width: wp('50%'),
+                                            paddingLeft: wp('5%'),
+                                            height: 55,
+                                            borderRadius: 10,
+                                            borderStyle: 'solid',
+                                            borderColor: this.state.borderColorSenha,
+                                            borderWidth: 1,
+                                            marginTop: 10,
+                                            overflow: 'hidden',
+                                            fontSize: 16
+                                        }}
+                                        underlineColorAndroid='transparent'
+                                        value={this.state.senha}
+                                        onFocus={() => this.onFocusSenha()}
+                                        onBlur={() => this.onBlurSenha()}
+                                        onChangeText={this.handlePasswordChange}
+                                        placeholder="Senha"
+                                        placeholderTextColor="#9d9d9d" />
+                                </Item>
 
-                        <Text
-                            style={estilo.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
 
-                        <TouchableOpacity onPress={this.handleSignInPress} >
-                            <Image
-                                style={estilo.buttonStyle}
-                                source={require('../img/bt-entrar.png')} />
-                        </TouchableOpacity>
+                                <Text style={estilo.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
+
+                                <TouchableOpacity onPress={this.handleSignInPress} >
+                                    <Image
+                                        style={estilo.buttonStyle}
+                                        source={require('../img/bt-entrar.png')} />
+                                </TouchableOpacity>
+
+                            </Content>
+                        </KeyboardAvoidingView>
                     </View>
 
                 </View>
@@ -143,19 +237,14 @@ export default class telaLogin extends Component {
 const estilo = StyleSheet.create({
     entrada: {
         width: wp('50%'),
+        paddingLeft: wp('5%'),
         height: 55,
-        borderColor: '#e0e0e0',
-        borderWidth: 0,
         borderRadius: 10,
         borderStyle: 'solid',
-        borderWidth: 12,
-        backgroundColor: '#e0e0e0',
-        borderWidth: 3,
+        borderWidth: 1,
         marginTop: 10,
-        color: 'black',
         overflow: 'hidden',
-        fontSize: 22,
-        textAlign: 'center',
+        fontSize: 16
     },
 
     header: {
@@ -196,7 +285,7 @@ const estilo = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        paddingTop: '1%',
+        paddingTop: '20%',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
@@ -223,5 +312,11 @@ const estilo = StyleSheet.create({
         height: hp('6%'),
         resizeMode: 'contain'
     },
+
+    iconForm: {
+        width: wp('5%'),
+        marginRight: wp('3%'),
+        resizeMode: 'contain'
+    }
 
 });
