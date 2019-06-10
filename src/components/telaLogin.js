@@ -5,6 +5,8 @@ import { StatusBar, AsyncStorage } from 'react-native';
 
 import { StackActions, NavigationActions } from 'react-navigation';
 
+import { Actions } from 'react-native-router-flux';
+
 import { Plataform } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -114,13 +116,14 @@ export default class telaLogin extends Component {
 
                 await AsyncStorage.setItem('@ProjectBuilder:token', this.state.data.access_token);
 
-                const resetAction = StackActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'TelaProjetos' }),
-                    ],
-                });
-                this.props.navigation.dispatch(resetAction);
+                // const resetAction = StackActions.reset({
+                //     index: 0,
+                //     actions: [
+                //         NavigationActions.navigate({ routeName: 'TelaProjetos' }),
+                //     ],
+                // });
+                Actions.TelaProjetos({ organizacao: this.state.organizacao, login: this.state.login });
+                // this.props.navigation.dispatch(resetAction);
             } catch (err) {
                 this.setState({ erro: 'Houve um problema com o login, verifique suas credenciais.' });
             }

@@ -38,13 +38,17 @@ export default class telaProjetos extends Component {
             projetos: [],
             componentes: [],
             isLoading: false,
-            nome: null
+            nome: null,
+            organizacao: this.props.organizacao,
+            usuario: this.props.login
             //aqui você vai adicionar o valor que você quer pegar dessa tela
         }
     }
 
 
     async componentDidMount() {
+        console.log(this.state.organizacao);
+        console.log(this.state.usuario);
         updateState = (response) => {
             this.setState({ projetos: response });
         }
@@ -136,8 +140,8 @@ export default class telaProjetos extends Component {
         }
     }
 
-    mudaTelaResumo = (comp) => {
-        Actions.TelaTarefasResumo({ comp: comp });
+    mudaTelaResumo = (comp, proj) => {
+        Actions.TelaTarefasResumo({ comp: comp, proj: proj, org: this.state.organizacao, user: this.state.usuario });
         const resetAction = StackActions.reset({
             index: 0,
         });
@@ -149,20 +153,26 @@ export default class telaProjetos extends Component {
         return (
             <Container>
                 <Loading hide={this.state.isLoading}></Loading>
-                <Header style={{ backgroundColor: 'white' }}>
-                    <Left>
+                <Header transparent style={{ backgroundColor: 'white' }}>
+                    {/* <Left>
                         <Button
                             transparent
                         >
                             <Icon style={{ color: '#2768ab' }} name="menu" />
                         </Button>
-                    </Left>
+                    </Left> */}
                     <Body>
                     </Body>
                     <Right>
                         <Image style={estilo.logoStyle} source={require('../img/logo-internas-pb.png')} />
                     </Right>
                 </Header>
+
+                <View>
+                    <Text style={{textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900'}}>Organização {this.state.organizacao}.</Text>
+                    <Text style={{textAlign: 'right', paddingRight: wp('5%')}}>{this.state.usuario}</Text>
+                </View>
+
                 <Content padder style={{ width: wp('100%') }}>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
@@ -204,7 +214,7 @@ export default class telaProjetos extends Component {
                                                 <Text style={{
                                                     color: 'black',
                                                     fontSize: 12
-                                                }}>Fim Previsto: {item.fimPrevisto}
+                                                }}>Fim Previsto: <Text style={{fontWeight: '900'}}>{item.fimPrevisto}</Text>
                                                 </Text>
                                             </View>
 
@@ -214,6 +224,7 @@ export default class telaProjetos extends Component {
                                                 <Text style={{
                                                     color: 'black',
                                                     fontSize: 12,
+                                                    textAlign: 'left'
                                                 }}>
                                                     {this.renderSituacao(item.situacao)}
                                                 </Text>
@@ -240,7 +251,7 @@ export default class telaProjetos extends Component {
                                 }}>
                                     {item.componentes.map((comp, key) => (
                                         //Aqui é onde você quer pegar as informações antes de mudar de tela
-                                        <TouchableOpacity onPress={() => this.mudaTelaResumo(comp)} key={key}>
+                                        <TouchableOpacity onPress={() => this.mudaTelaResumo(comp, item)} key={key}>
                                             <View style={{ paddingTop: 20 }}>
                                                 <View>
 
@@ -265,6 +276,7 @@ export default class telaProjetos extends Component {
                                                         <Text style={{
                                                             color: 'black',
                                                             fontSize: 12,
+                                                            fontWeight: '900'
                                                         }}>Fim Previsto: {comp.fimPrevisto}
                                                         </Text>
                                                     </View>

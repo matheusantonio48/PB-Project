@@ -24,10 +24,6 @@ import {
 class HeaderNB extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.comp);
-    //Aqui você dá um console.log pra ver o que ta retonando console.log(this.props);
-    //e aqui você retorna assim this.props.seucu
-    //sin
     this.state = {
       projetos: [],
       componentes: [],
@@ -130,20 +126,19 @@ class HeaderNB extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Header style={{ backgroundColor: 'white' }}>
-          <Left>
-            <Button
-              transparent
-            >
-              <Icon style={{ color: '#2768ab' }} name="menu" />
-            </Button>
-          </Left>
+        <Header transparent style={{ backgroundColor: 'white' }}>
           <Body>
           </Body>
           <Right>
             <Image style={styles.logoStyle} source={require('../img/logo-internas-pb.png')} />
           </Right>
         </Header>
+
+        <View>
+          <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
+          <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.props.user}</Text>
+        </View>
+
         <Content>
           <Card style={{ backgroundColor: '#dcdcdc' }}>
             <CardItem style={{
@@ -154,36 +149,29 @@ class HeaderNB extends Component {
                 flex: 1,
                 flexDirection: 'row'
               }}>
-                <Text> Projeto: </Text>
-                <Text>{this.props.comp.nome}</Text>
+                <Text style={{fontSize: 10, fontWeight: '900'}}> PROJETO {this.props.proj.nome} / TAREFA {this.props.comp.nome} </Text>
               </Body>
             </CardItem>
-            <CardItem style={{ flexDirection: 'row', justifyContent: 'space-evenly' }} header>
+            <CardItem style={{ flexDirection: 'row', justifyContent: 'space-around' }} header>
               <View>
-                <Text>Início Previsto: </Text>
-                <Text>{this.props.comp.inicioPrevisto}</Text>
+                <Text style={{fontSize: 12, textAlign: 'left'}}>Início Previsto: {this.props.comp.inicioPrevisto}</Text>
               </View>
               <View>
-                <Text>Fim Previsto: </Text>
-                <Text>{this.props.comp.fimPrevisto}</Text>
+                <Text style={{fontSize: 12, textAlign: 'left'}}>Fim Previsto: {this.props.comp.fimPrevisto}</Text>
               </View>
             </CardItem>
-         
-              <CardItem style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <View>
-                  <Text>Situação: </Text>
-                    <Text>
-                      {this.renderSituacao(this.props.comp.situacao)}
-                    </Text>
-                  {/*  <View>{this.renderCorSituacao(this.props.comp.situacao)}</View>*/}
-                </View>
-                <View>
-                  <Text>Início real: </Text>
-                  <Text>{this.props.comp.inicioReal}</Text>
-                </View>
-              </CardItem>
 
-          
+            <CardItem style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+              <View>
+                <Text style={{fontSize: 12, textAlign: 'left'}}>Situação: {this.renderSituacao(this.props.comp.situacao)}</Text>
+                {/*  <View>{this.renderCorSituacao(this.props.comp.situacao)}</View>*/}
+              </View>
+              <View>
+                <Text style={{fontSize: 12, textAlign: 'left'}}>Início real: {this.props.comp.inicioReal}</Text>
+              </View>
+            </CardItem>
+
+
 
             <CardItem header>
               <Body>
@@ -216,7 +204,7 @@ class HeaderNB extends Component {
             </CardItem>
             <CardItem style={{ justifyContent: 'space-around' }}>
               <Body>
-                <Text style={{paddingLeft: '50%'}}>Início</Text>
+                <Text style={{ paddingLeft: '50%' }}>Início</Text>
               </Body>
               <Body>
                 <Text>Fim</Text>
@@ -236,7 +224,7 @@ class HeaderNB extends Component {
                 flexDirection: 'row'
               }}>
                 <Text>Previsto: </Text>
-                <Text style={{paddingLeft: '5%', paddingRight: '5%'}}>{this.props.comp.inicioPrevisto}</Text>
+                <Text style={{ paddingLeft: '5%', paddingRight: '5%' }}>{this.props.comp.inicioPrevisto}</Text>
                 <Text>{this.props.comp.fimPrevisto}</Text>
               </Body>
             </CardItem>
