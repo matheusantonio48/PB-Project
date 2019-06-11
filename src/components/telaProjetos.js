@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { AsyncStorage } from 'react-native';
-import { Content, Footer, FooterTab, Container, Header, Left, Right, Body, Button, Icon, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
+import { Content, Card, CardItem, Footer, FooterTab, Container, Header, Left, Right, Body, Button, Icon, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
@@ -41,14 +41,11 @@ export default class telaProjetos extends Component {
             nome: null,
             organizacao: this.props.organizacao,
             usuario: this.props.login
-            //aqui você vai adicionar o valor que você quer pegar dessa tela
         }
     }
 
 
     async componentDidMount() {
-        console.log(this.state.organizacao);
-        console.log(this.state.usuario);
         updateState = (response) => {
             this.setState({ projetos: response });
         }
@@ -75,9 +72,7 @@ export default class telaProjetos extends Component {
                 console.log('Error: ' + error);
             }).finally(function () {
                 updateLoad();
-                console.log('Entrou');
             });
-        console.log(this.state.isLoading);
     }
 
 
@@ -115,33 +110,33 @@ export default class telaProjetos extends Component {
     renderSituacao = (situacao) => {
         if (situacao === 3) {
             return (
-                <Text>Em Andamento</Text>
+                <Text style={{ textAlign: 'left' }}>Em Andamento</Text>
             );
         } else if (situacao === 4) {
             return (
-                <Text>Concluído</Text>
+                <Text style={{ textAlign: 'left' }}>Concluído</Text>
             );
         } else if (situacao === 7) {
             return (
-                <Text>Atraso</Text>
+                <Text style={{ textAlign: 'left' }}>Atraso</Text>
             );
         } else if (situacao === 8) {
             return (
-                <Text>Pode iniciar</Text>
+                <Text style={{ textAlign: 'left' }}>Pode iniciar</Text>
             );
         } else if (situacao === 9) {
             return (
-                <Text>Parado</Text>
+                <Text style={{ textAlign: 'left' }}>Parado</Text>
             );
         } else {
             return (
-                <Text>Desconhecida</Text>
+                <Text style={{ textAlign: 'left' }}>Desconhecida</Text>
             );
         }
     }
 
-    mudaTelaResumo = (comp, proj) => {
-        Actions.TelaTarefasResumo({ comp: comp, proj: proj, org: this.state.organizacao, user: this.state.usuario });
+    mudaTelaResumo = (proj) => {
+        Actions.TelaTarefasResumo({ proj: proj, org: this.state.organizacao, user: this.state.usuario });
         const resetAction = StackActions.reset({
             index: 0,
         });
@@ -154,84 +149,87 @@ export default class telaProjetos extends Component {
             <Container>
                 <Loading hide={this.state.isLoading}></Loading>
                 <Header transparent style={{ backgroundColor: 'white' }}>
-                    {/* <Left>
+                    <Left>
                         <Button
                             transparent
                         >
-                            <Icon style={{ color: '#2768ab' }} name="menu" />
+                            <Image style={estilo.logoStyle} source={require('../img/logo-internas-pb.png')} />
                         </Button>
-                    </Left> */}
+                    </Left>
                     <Body>
                     </Body>
                     <Right>
-                        <Image style={estilo.logoStyle} source={require('../img/logo-internas-pb.png')} />
+                        <View>
+                            <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.state.organizacao}.</Text>
+                            <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.state.usuario}</Text>
+                        </View>
+
                     </Right>
                 </Header>
 
-                <View>
-                    <Text style={{textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900'}}>Organização {this.state.organizacao}.</Text>
-                    <Text style={{textAlign: 'right', paddingRight: wp('5%')}}>{this.state.usuario}</Text>
-                </View>
 
                 <Content padder style={{ width: wp('100%') }}>
+                    <Text style={{ fontWeight: '900', fontSize: 25 }}>FOCO</Text>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
                             style={{ backgroundColor: 'white', marginBottom: 10 }}>
-                            <Collapse onPress={this.alteraLogo} >
-                                <CollapseHeader style={{
+                            <TouchableOpacity onPress={() => this.mudaTelaResumo(item)}>
+
+                                <Card style={{
                                     backgroundColor: '#dcdcdc', paddingRight: '8%', paddingLeft: '8%', paddingTop: 8, paddingBottom: 5
                                 }}>
-                                    <View>
-                                        <View style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                            maxWidth: '90%'
-                                        }}>
-                                            <Text style={{
-                                                color: 'black',
-                                                fontWeight: 'normal',
-                                                fontSize: 14
-                                            }}>Projeto: </Text>
-                                            <Text style={{
-                                                color: 'black',
-                                                fontWeight: 'bold',
-                                                fontSize: 14
-                                            }}>{item.nome}
-                                            </Text>
-                                        </View>
-
-                                        <View style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                            justifyContent: "space-around",
-                                            marginBottom: 10,
-                                            paddingBottom: 10,
-                                            paddingTop: 8,
-                                            borderBottomColor: '#c1c1c1',
-                                            borderBottomWidth: 1.0
-                                        }}>
-                                            <View>
+                                    <CardItem style={{ backgroundColor: '#dcdcdc' }}>
+                                        <View>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                maxWidth: '90%'
+                                            }}>
                                                 <Text style={{
                                                     color: 'black',
-                                                    fontSize: 12
-                                                }}>Fim Previsto: <Text style={{fontWeight: '900'}}>{item.fimPrevisto}</Text>
+                                                    fontWeight: 'normal',
+                                                    fontSize: 14
+                                                }}>Projeto: </Text>
+                                                <Text style={{
+                                                    color: 'black',
+                                                    fontWeight: 'bold',
+                                                    fontSize: 14
+                                                }}>{item.nome}
                                                 </Text>
                                             </View>
 
-                                            {this.renderCorSituacao(item.situacao)}
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                justifyContent: "space-around",
+                                                marginBottom: 10,
+                                                paddingBottom: 10,
+                                                paddingTop: 8,
+                                                borderBottomColor: '#c1c1c1',
+                                                borderBottomWidth: 1.0
+                                            }}>
+                                                <View>
+                                                    <Text style={{
+                                                        color: 'black',
+                                                        fontSize: 12
+                                                    }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
+                                                    </Text>
+                                                </View>
 
-                                            <View style={{ justifyContent: 'flex-start' }}>
-                                                <Text style={{
-                                                    color: 'black',
-                                                    fontSize: 12,
-                                                    textAlign: 'left'
-                                                }}>
-                                                    {this.renderSituacao(item.situacao)}
-                                                </Text>
+                                                {this.renderCorSituacao(item.situacao)}
+
+                                                <View style={{ justifyContent: 'flex-start' }}>
+                                                    <Text style={{
+                                                        color: 'black',
+                                                        fontSize: 12,
+                                                        textAlign: 'left'
+                                                    }}>
+                                                        {this.renderSituacao(item.situacao)}
+                                                    </Text>
+                                                </View>
+
                                             </View>
-
-                                        </View>
-                                        <View style={{
+                                            {/* <View style={{
                                             flex: 1,
                                             flexDirection: 'row',
                                             justifyContent: 'flex-end',
@@ -239,10 +237,12 @@ export default class telaProjetos extends Component {
                                             marginBottom: 10
                                         }}>
                                             <Thumbnail style={{ width: 25, height: 25 }} source={require('../img/ico-abrir-box.png')} />
+                                        </View> */}
                                         </View>
-                                    </View>
-                                </CollapseHeader>
-                                <CollapseBody style={{
+                                    </CardItem>
+                                </Card>
+                            </TouchableOpacity>
+                            {/* <CollapseBody style={{
                                     flex: 1,
                                     flexDirection: 'column',
                                     justifyContent: 'flex-start',
@@ -250,7 +250,6 @@ export default class telaProjetos extends Component {
                                     paddingLeft: 22
                                 }}>
                                     {item.componentes.map((comp, key) => (
-                                        //Aqui é onde você quer pegar as informações antes de mudar de tela
                                         <TouchableOpacity onPress={() => this.mudaTelaResumo(comp, item)} key={key}>
                                             <View style={{ paddingTop: 20 }}>
                                                 <View>
@@ -297,8 +296,7 @@ export default class telaProjetos extends Component {
                                             </View>
                                         </TouchableOpacity>
                                     ))}
-                                </CollapseBody>
-                            </Collapse>
+                                </CollapseBody> */}
                         </View>
                     ))}
                 </Content>

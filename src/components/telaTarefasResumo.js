@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Image, View } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import {
   Container,
@@ -15,10 +16,13 @@ import {
   ListItem,
   List,
   Footer,
+  TouchableOpacity,
   FooterTab,
   Card,
   CardItem
 } from "native-base";
+
+import axios from '../services/axios';
 
 
 class HeaderNB extends Component {
@@ -66,30 +70,46 @@ class HeaderNB extends Component {
     });
   }
 
+  async componentDidMount () {
+    let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
+
+    this.props.proj.forEach(componente => {
+      axios.post('/v1/componente/listar', { "id": componente.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+        .then(responseComp => {
+          console.log(responseComp);
+          // componente.componentes = responseComp.data.lista;
+          // projetoComp.push(projeto);
+          // updateState(projetoComp);
+        }).catch(error => {
+          console.log(error);
+        });
+    });
+  }
+
   renderCorSituacao = (situacao) => {
     if (situacao === 3) {
       return (
-        <Container style={{ width: 5, height: 5, marginTop: 5, backgroundColor: '#FFFF00' }}></Container>
+        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
       );
     } else if (situacao === 4) {
       return (
-        <Container style={{ width: 5, height: 5, marginTop: 5, backgroundColor: '#0000FF' }}></Container>
+        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#0000FF' }}></View>
       );
     } else if (situacao === 7) {
       return (
-        <Container style={{ width: 5, height: 5, marginTop: 5, backgroundColor: '#FF0000' }}></Container>
+        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
       );
     } else if (situacao === 8) {
       return (
-        <Container style={{ width: 5, height: 5, marginTop: 5, backgroundColor: '#36d925' }}></Container>
+        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
       );
     } else if (situacao === 9) {
       return (
-        <Container style={{ width: 5, height: 5, marginTop: 5, backgroundColor: '#9A62DF' }}></Container>
+        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
       );
     } else {
       return (
-        <Container style={{ width: 5, height: 5, marginTop: 5, backgroundColor: '#000000' }}></Container>
+        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#000000' }}></View>
       );
     }
   }
@@ -97,27 +117,27 @@ class HeaderNB extends Component {
   renderSituacao = (situacao) => {
     if (situacao === 3) {
       return (
-        <Text>Em Andamento</Text>
+        <Text style={{ textAlign: 'left' }}>Em Andamento</Text>
       );
     } else if (situacao === 4) {
       return (
-        <Text>Concluído</Text>
+        <Text style={{ textAlign: 'left' }}>Concluído</Text>
       );
     } else if (situacao === 7) {
       return (
-        <Text>Atraso</Text>
+        <Text style={{ textAlign: 'left' }}>Atraso</Text>
       );
     } else if (situacao === 8) {
       return (
-        <Text>Pode iniciar</Text>
+        <Text style={{ textAlign: 'left' }}>Pode iniciar</Text>
       );
     } else if (situacao === 9) {
       return (
-        <Text>Parado</Text>
+        <Text style={{ textAlign: 'left' }}>Parado</Text>
       );
     } else {
       return (
-        <Text>Desconhecida</Text>
+        <Text style={{ textAlign: 'left' }}>Desconhecida</Text>
       );
     }
   }
@@ -127,120 +147,102 @@ class HeaderNB extends Component {
     return (
       <Container style={styles.container}>
         <Header transparent style={{ backgroundColor: 'white' }}>
+          <Left>
+            <Button
+              transparent
+            >
+              <Image style={styles.logoStyle} source={require('../img/logo-internas-pb.png')} />
+            </Button>
+          </Left>
+
           <Body>
           </Body>
+
           <Right>
-            <Image style={styles.logoStyle} source={require('../img/logo-internas-pb.png')} />
+            <View>
+              <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
+              <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.props.user}</Text>
+            </View>
           </Right>
         </Header>
 
-        <View>
-          <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
-          <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.props.user}</Text>
-        </View>
-
         <Content>
-          <Card style={{ backgroundColor: '#dcdcdc' }}>
+          <Text style={{ fontWeight: '900', fontSize: 25 }}>REGISTROS</Text>
+          <Card>
             <CardItem style={{
               borderBottomColor: '#c1c1c1',
-              borderBottomWidth: 1.0
+              borderBottomWidth: 1.0,
+              backgroundColor: '#dcdcdc'
             }}>
               <Body style={{
                 flex: 1,
                 flexDirection: 'row'
               }}>
-                <Text style={{fontSize: 10, fontWeight: '900'}}> PROJETO {this.props.proj.nome} / TAREFA {this.props.comp.nome} </Text>
-              </Body>
-            </CardItem>
-            <CardItem style={{ flexDirection: 'row', justifyContent: 'space-around' }} header>
-              <View>
-                <Text style={{fontSize: 12, textAlign: 'left'}}>Início Previsto: {this.props.comp.inicioPrevisto}</Text>
-              </View>
-              <View>
-                <Text style={{fontSize: 12, textAlign: 'left'}}>Fim Previsto: {this.props.comp.fimPrevisto}</Text>
-              </View>
-            </CardItem>
+                <View>
+                  <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    maxWidth: '90%'
+                  }}>
+                    <Text style={{
+                      color: 'black',
+                      fontWeight: 'normal',
+                      fontSize: 14
+                    }}>Projeto: </Text>
+                    <Text style={{
+                      color: 'black',
+                      fontWeight: 'bold',
+                      fontSize: 14
+                    }}>{this.props.proj.nome}
+                    </Text>
+                  </View>
 
-            <CardItem style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-              <View>
-                <Text style={{fontSize: 12, textAlign: 'left'}}>Situação: {this.renderSituacao(this.props.comp.situacao)}</Text>
-                {/*  <View>{this.renderCorSituacao(this.props.comp.situacao)}</View>*/}
-              </View>
-              <View>
-                <Text style={{fontSize: 12, textAlign: 'left'}}>Início real: {this.props.comp.inicioReal}</Text>
-              </View>
-            </CardItem>
+                  <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: "space-around",
+                    marginBottom: 10,
+                    paddingBottom: 10,
+                    paddingTop: 8
+                  }}>
+                    <View>
+                      <Text style={{
+                        color: 'black',
+                        fontSize: 12
+                      }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{this.props.proj.fimPrevisto}</Text>
+                      </Text>
+                    </View>
 
+                    {this.renderCorSituacao(this.props.proj.situacao)}
 
+                    <View style={{ justifyContent: 'flex-start' }}>
+                      <Text style={{
+                        color: 'black',
+                        fontSize: 12,
+                        textAlign: 'left'
+                      }}>
+                        {this.renderSituacao(this.props.proj.situacao)}
+                      </Text>
+                    </View>
 
-            <CardItem header>
-              <Body>
-                <Text>Escopo</Text>
+                  </View>
+                </View>
               </Body>
             </CardItem>
-            <CardItem style={{
-              borderBottomColor: '#c1c1c1',
-              borderBottomWidth: 1.0
-            }}>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>% previsto: </Text>
-                <Text>{this.props.comp.escopoPrevisto}</Text>
-              </Body>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>% realizado: </Text>
-                <Text>{this.props.comp.escopoReal}</Text>
-              </Body>
-            </CardItem>
-            <CardItem header>
-              <Body>
-                <Text>Tempo</Text>
-              </Body>
-            </CardItem>
-            <CardItem style={{ justifyContent: 'space-around' }}>
-              <Body>
-                <Text style={{ paddingLeft: '50%' }}>Início</Text>
-              </Body>
-              <Body>
-                <Text>Fim</Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>Base: </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>Previsto: </Text>
-                <Text style={{ paddingLeft: '5%', paddingRight: '5%' }}>{this.props.comp.inicioPrevisto}</Text>
-                <Text>{this.props.comp.fimPrevisto}</Text>
-              </Body>
-            </CardItem>
-            <CardItem style={{
-              borderBottomColor: '#c1c1c1',
-              borderBottomWidth: 1.0
-            }}>
-              <Body style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}>
-                <Text>Real: </Text>
-                <Text style={{ paddingLeft: '14%', paddingRight: '5%' }}>{this.props.comp.inicioReal}</Text>
-                <Text>{this.props.comp.fimReal}</Text>
-              </Body>
-            </CardItem>
+            
+            {/* {this.state.componentes.map((comp, key) => (
+              <TouchableOpacity key={key}>
+                <CardItem style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                  <View>
+                    <Text style={{fontSize: 12, textAlign: 'left'}}> {comp.inicioPrevisto}</Text>
+                  </View>
+                  <View>
+                    <Text style={{fontSize: 12, textAlign: 'left'}}>Fim Previsto: {this.props.comp.fimPrevisto}</Text>
+                  </View>
+                </CardItem>
+              </TouchableOpacity>
+            ))} */}
+
           </Card>
         </Content>
         <Footer >
@@ -269,10 +271,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   logoStyle: {
-    width: wp('35%'),
-    height: hp('40%'),
+    width: wp('45%'),
+    height: hp('50%'),
     resizeMode: 'contain'
-  },
+  }
 });
 
 export default HeaderNB;
