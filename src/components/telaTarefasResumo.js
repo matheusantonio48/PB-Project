@@ -28,9 +28,12 @@ import axios from '../services/axios';
 class HeaderNB extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.proj);
     this.state = {
       projetos: [],
       componentes: [],
+      projetoComp: [],
+      nomes: [],
       tab1: false,
       tab2: false,
       tab3: true,
@@ -70,46 +73,47 @@ class HeaderNB extends Component {
     });
   }
 
-  async componentDidMount () {
-    let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
+  async componentDidMount() {
+    updateState = (response) => {
+      this.setState({ componentes: response });
+    }
 
-    this.props.proj.forEach(componente => {
-      axios.post('/v1/componente/listar', { "id": componente.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
-        .then(responseComp => {
-          console.log(responseComp);
-          // componente.componentes = responseComp.data.lista;
-          // projetoComp.push(projeto);
-          // updateState(projetoComp);
-        }).catch(error => {
-          console.log(error);
-        });
+    this.props.proj.componentes.forEach(componente => {
+      this.state.projetoComp.push(componente);
+      this.state.nomes.push(componente.nome);
     });
+
+    // console.log(this.state.projetoComp);
+  }
+
+  telaAnterior = () => {
+    Actions.TelaProjetos();
   }
 
   renderCorSituacao = (situacao) => {
     if (situacao === 3) {
       return (
-        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+        <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
       );
     } else if (situacao === 4) {
       return (
-        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+        <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
       );
     } else if (situacao === 7) {
       return (
-        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+        <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
       );
     } else if (situacao === 8) {
       return (
-        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
+        <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#36d925' }}></View>
       );
     } else if (situacao === 9) {
       return (
-        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+        <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
       );
     } else {
       return (
-        <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#000000' }}></View>
+        <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#000000' }}></View>
       );
     }
   }
@@ -200,52 +204,107 @@ class HeaderNB extends Component {
                   <View style={{
                     flex: 1,
                     flexDirection: 'row',
-                    justifyContent: "space-around",
                     marginBottom: 10,
+                    width: wp('80%'),
                     paddingBottom: 10,
-                    paddingTop: 8
+                    paddingTop: 8,
+                    borderBottomColor: '#c1c1c1',
+                    borderBottomWidth: 1.0
                   }}>
                     <View>
                       <Text style={{
                         color: 'black',
-                        fontSize: 12
+                        fontSize: 12,
+                        paddingRight: wp('10%')
                       }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{this.props.proj.fimPrevisto}</Text>
                       </Text>
                     </View>
 
-                    {this.renderCorSituacao(this.props.proj.situacao)}
 
-                    <View style={{ justifyContent: 'flex-start' }}>
+                    <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                      {this.renderCorSituacao(this.props.proj.situacao)}
                       <Text style={{
                         color: 'black',
                         fontSize: 12,
-                        textAlign: 'left'
+                        textAlign: 'left',
+                        paddingLeft: wp('2%')
                       }}>
                         {this.renderSituacao(this.props.proj.situacao)}
                       </Text>
+                    </View>
+
+                    <View>
+                      <Image style={styles.icoSeta} source={require('../img/ico-seta-esq-fechar-white.png')} />
                     </View>
 
                   </View>
                 </View>
               </Body>
             </CardItem>
-            
-            {/* {this.state.componentes.map((comp, key) => (
-              <TouchableOpacity key={key}>
-                <CardItem style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                  <View>
-                    <Text style={{fontSize: 12, textAlign: 'left'}}> {comp.inicioPrevisto}</Text>
-                  </View>
-                  <View>
-                    <Text style={{fontSize: 12, textAlign: 'left'}}>Fim Previsto: {this.props.comp.fimPrevisto}</Text>
+
+            {/* {this.props.proj.componentes.forEach(comp => {
+              <View>
+              {console.log(comp.nome)}
+                <CardItem style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ textAlign: 'left' }}>
+                      <Text style={{ fontWeight: '600', fontSize: 14 }}>Nome de teste da tarefa {comp.nome}</Text>
+                      </Text>
+                      </View>
+                      </CardItem>
+
+                <CardItem style={{ flexDirection: 'row' }}>
+                  <View style={{ justifyContent: 'space-between' }}>
+                    <View>
+                      <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Nome</Text></Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>01/01/2000</Text></Text>
+                    </View>
                   </View>
                 </CardItem>
-              </TouchableOpacity>
-            ))} */}
+
+                <CardItem style={{ flexDirection: 'row' }}>
+                  <View>
+                    <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a arcu condimentum, ullamcorper arcu non, sodales odio. Morbi non ex scelerisque, tristique sapien et, tempor orci. Fusce tristique orci eu lorem pharetra bibendum. Nulla consequat, erat id hendrerit feugiat, orci turpis blandit risus, vitae efficitur quam quam vitae metus. Nulla maximus magna at nunc finibus, interdum eleifend est porta. Cras a finibus mi. Proin eros turpis, rhoncus vel erat sit amet, bibendum vulputate velit. Praesent tincidunt eget orci vitae porta. Duis vehicula lacinia nibh, et elementum velit. Sed id purus in justo sollicitudin viverra vel ut massa. Duis sagittis eleifend neque eget porta. </Text>
+                  </View>
+                </CardItem>
+              </View>
+            })} */}
+
+            {this.props.proj.componentes.map((comp, key) => {
+              {/* { console.log(comp.nome) } */ }
+              <View key={key}>
+                <CardItem style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ textAlign: 'left' }}>
+                      <Text style={{ fontWeight: '600', fontSize: 14 }}>Nome de teste da tarefa</Text>
+                    </Text>
+                  </View>
+                </CardItem>
+
+                <CardItem style={{ flexDirection: 'row' }}>
+                  <View style={{ justifyContent: 'space-between' }}>
+                    <View>
+                      <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Nome</Text></Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>01/01/2000</Text></Text>
+                    </View>
+                  </View>
+                </CardItem>
+
+                <CardItem style={{ flexDirection: 'row' }}>
+                  <View>
+                    <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a arcu condimentum, ullamcorper arcu non, sodales odio. Morbi non ex scelerisque, tristique sapien et, tempor orci. Fusce tristique orci eu lorem pharetra bibendum. Nulla consequat, erat id hendrerit feugiat, orci turpis blandit risus, vitae efficitur quam quam vitae metus. Nulla maximus magna at nunc finibus, interdum eleifend est porta. Cras a finibus mi. Proin eros turpis, rhoncus vel erat sit amet, bibendum vulputate velit. Praesent tincidunt eget orci vitae porta. Duis vehicula lacinia nibh, et elementum velit. Sed id purus in justo sollicitudin viverra vel ut massa. Duis sagittis eleifend neque eget porta. </Text>
+                  </View>
+                </CardItem>
+              </View>
+            })}
 
           </Card>
         </Content>
-        <Footer >
+        {/* <Footer >
           <FooterTab style={{ backgroundColor: 'white' }}>
             <Button active={this.state.tab1} onPress={() => this.toggleTab1()} >
               <Icon style={{ color: '#dcdcdc' }} active={this.state.tab1} name="home" />
@@ -260,7 +319,7 @@ class HeaderNB extends Component {
               <Icon style={{ color: '#dcdcdc' }} active={this.state.tab4} name="cog" />
             </Button>
           </FooterTab>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }
@@ -269,6 +328,11 @@ class HeaderNB extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white"
+  },
+  icoSeta: {
+    width: wp('3%'),
+    height: hp('3%'),
+    resizeMode: 'contain'
   },
   logoStyle: {
     width: wp('45%'),

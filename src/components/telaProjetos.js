@@ -82,27 +82,27 @@ export default class telaProjetos extends Component {
     renderCorSituacao = (situacao) => {
         if (situacao === 3) {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
             );
         } else if (situacao === 4) {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
             );
         } else if (situacao === 7) {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
             );
         } else if (situacao === 8) {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#36d925' }}></View>
             );
         } else if (situacao === 9) {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
             );
         } else {
             return (
-                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#000000' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#000000' }}></View>
             );
         }
     }
@@ -140,8 +140,6 @@ export default class telaProjetos extends Component {
         const resetAction = StackActions.reset({
             index: 0,
         });
-        // this.props.navigation.dispatch(resetAction);
-        //Actions.TelaTarefasResumo(aqui dentro você vai colocar o this.state com a informação que você pegou da parada que você clicou e quer retorna na outra tela) ah é, você tem que passar a informação com um parametro ;
     }
 
     render() {
@@ -176,7 +174,7 @@ export default class telaProjetos extends Component {
                             <TouchableOpacity onPress={() => this.mudaTelaResumo(item)}>
 
                                 <Card style={{
-                                    backgroundColor: '#dcdcdc', paddingRight: '8%', paddingLeft: '8%', paddingTop: 8, paddingBottom: 5
+                                    backgroundColor: '#dcdcdc', paddingRight: '8%', paddingLeft: '2%', paddingTop: 8, paddingBottom: 5
                                 }}>
                                     <CardItem style={{ backgroundColor: '#dcdcdc' }}>
                                         <View>
@@ -201,8 +199,8 @@ export default class telaProjetos extends Component {
                                             <View style={{
                                                 flex: 1,
                                                 flexDirection: 'row',
-                                                justifyContent: "space-around",
                                                 marginBottom: 10,
+                                                width: wp('80%'),
                                                 paddingBottom: 10,
                                                 paddingTop: 8,
                                                 borderBottomColor: '#c1c1c1',
@@ -211,21 +209,27 @@ export default class telaProjetos extends Component {
                                                 <View>
                                                     <Text style={{
                                                         color: 'black',
-                                                        fontSize: 12
+                                                        fontSize: 12,
+                                                        paddingRight: wp('10%')
                                                     }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
                                                     </Text>
                                                 </View>
 
-                                                {this.renderCorSituacao(item.situacao)}
 
-                                                <View style={{ justifyContent: 'flex-start' }}>
+                                                <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                                {this.renderCorSituacao(item.situacao)}
                                                     <Text style={{
                                                         color: 'black',
                                                         fontSize: 12,
-                                                        textAlign: 'left'
+                                                        textAlign: 'left',
+                                                        paddingLeft: wp('2%')
                                                     }}>
                                                         {this.renderSituacao(item.situacao)}
                                                     </Text>
+                                                </View>
+
+                                                <View>
+                                                    <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir-white.png')} />
                                                 </View>
 
                                             </View>
@@ -301,7 +305,7 @@ export default class telaProjetos extends Component {
                     ))}
                 </Content>
 
-                <Footer >
+                {/* <Footer >
                     <FooterTab style={{ backgroundColor: 'white' }}>
                         <Button active={this.state.tab1}>
                             <Icon style={{ color: '#dcdcdc' }} active={this.state.tab1} name="home" />
@@ -316,7 +320,7 @@ export default class telaProjetos extends Component {
                             <Icon style={{ color: '#dcdcdc' }} active={this.state.tab4} name="cog" />
                         </Button>
                     </FooterTab>
-                </Footer>
+                </Footer> */}
 
             </Container>
         );
@@ -363,6 +367,11 @@ const estilo = StyleSheet.create({
     logoStyle: {
         width: wp('45%'),
         height: hp('50%'),
+        resizeMode: 'contain'
+    },
+    icoSeta: {
+        width: wp('3%'),
+        height: hp('3%'),
         resizeMode: 'contain'
     },
     logoFooter: {
