@@ -59,7 +59,7 @@ export default class telaLogin extends Component {
             borderColorOrganizacao: '#64d4ff'
         })
     }
-    
+
     onFocusIdentificacao() {
         this.setState({
             borderColorIdentificacao: '#64d4ff'
@@ -70,13 +70,13 @@ export default class telaLogin extends Component {
             borderColorSenha: '#64d4ff'
         })
     }
-    
+
     onBlurOrganizacao() {
         this.setState({
             borderColorOrganizacao: '#e5e5e5'
         })
     }
-    
+
     onBlurIdentificacao() {
         this.setState({
             borderColorIdentificacao: '#e5e5e5'
@@ -132,107 +132,106 @@ export default class telaLogin extends Component {
 
     render() {
         return (
-            <ImageBackground
-                source={require("../img/background.png")}
-                style={estilo.imgBackground}>
-                <View style={estilo.principal}>
-                    <StatusBar hidden />
+            <KeyboardAvoidingView
+            style={estilo.principal}
+            behavior="padding">
+                <StatusBar hidden />
+                <Container style={estilo.body}>
                     <View style={estilo.header}>
                         <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
                     </View>
-                    <View style={estilo.body}>
-                        <KeyboardAvoidingView>
-                            <Content>
-                                <Item>
-                                    <Image style={estilo.iconForm} source={require('../img/ico-login-organizacao.png')} />
-                                    <Input
-                                        style={{
-                                            width: wp('50%'),
-                                            paddingLeft: wp('5%'),
-                                            height: 55,
-                                            borderRadius: 10,
-                                            borderStyle: 'solid',
-                                            borderColor: this.state.borderColorOrganizacao,
-                                            borderWidth: 1,
-                                            marginTop: 10,
-                                            overflow: 'hidden',
-                                            fontSize: 16
-                                        }}
-                                        underlineColorAndroid='transparent'
-                                        value={this.state.organizacao}
-                                        onFocus={() => this.onFocusOrganizacao()}
-                                        onBlur={() => this.onBlurOrganizacao()}
-                                        onChangeText={this.handleOrganizationChange}
-                                        placeholder="Organização"
-                                        placeholderTextColor="#9d9d9d" />
-                                </Item>
+                        <View>
+                            <Item>
+                                <Image style={estilo.iconForm} source={require('../img/ico-login-organizacao.png')} />
+                                <Input
+                                    style={{
+                                        width: wp('50%'),
+                                        paddingLeft: wp('5%'),
+                                        height: 55,
+                                        borderRadius: 10,
+                                        borderStyle: 'solid',
+                                        borderColor: this.state.borderColorOrganizacao,
+                                        borderWidth: 1,
+                                        marginTop: 10,
+                                        overflow: 'hidden',
+                                        fontSize: 16
+                                    }}
+                                    underlineColorAndroid='transparent'
+                                    value={this.state.organizacao}
+                                    onFocus={() => this.onFocusOrganizacao()}
+                                    onBlur={() => this.onBlurOrganizacao()}
+                                    onChangeText={this.handleOrganizationChange}
+                                    placeholder="Organização"
+                                    placeholderTextColor="#9d9d9d" />
+                            </Item>
 
-                                <Item>
-                                    <Image style={estilo.iconForm} source={require('../img/ico-login-identificacao.png')} />
-                                    <Input
-                                        style={{
-                                            width: wp('50%'),
-                                            paddingLeft: wp('5%'),
-                                            height: 55,
-                                            borderRadius: 10,
-                                            borderStyle: 'solid',
-                                            borderColor: this.state.borderColorIdentificacao,
-                                            borderWidth: 1,
-                                            marginTop: 10,
-                                            overflow: 'hidden',
-                                            fontSize: 16
-                                        }}
-                                        underlineColorAndroid='transparent'
-                                        value={this.state.login}
-                                        onFocus={() => this.onFocusIdentificacao()}
-                                        onBlur={() => this.onBlurIdentificacao()}
-                                        onChangeText={this.handleLoginChange}
-                                        placeholder="Identificação"
-                                        placeholderTextColor="#9d9d9d" />
+                            <Item>
+                                <Image style={estilo.iconForm} source={require('../img/ico-login-identificacao.png')} />
+                                <Input
+                                    style={{
+                                        width: wp('50%'),
+                                        paddingLeft: wp('5%'),
+                                        height: 55,
+                                        borderRadius: 10,
+                                        borderStyle: 'solid',
+                                        borderColor: this.state.borderColorIdentificacao,
+                                        borderWidth: 1,
+                                        marginTop: 10,
+                                        overflow: 'hidden',
+                                        fontSize: 16
+                                    }}
+                                    underlineColorAndroid='transparent'
+                                    value={this.state.login}
+                                    onFocus={() => this.onFocusIdentificacao()}
+                                    onBlur={() => this.onBlurIdentificacao()}
+                                    onChangeText={this.handleLoginChange}
+                                    placeholder="Identificação"
+                                    placeholderTextColor="#9d9d9d" />
 
-                                </Item>
+                            </Item>
 
-                                <Item>
-                                    <Image style={estilo.iconForm} source={require('../img/ico-login-senha.png')} />
-                                    <Input
-                                        secureTextEntry={true}
-                                        style={{
-                                            width: wp('50%'),
-                                            paddingLeft: wp('5%'),
-                                            height: 55,
-                                            borderRadius: 10,
-                                            borderStyle: 'solid',
-                                            borderColor: this.state.borderColorSenha,
-                                            borderWidth: 1,
-                                            marginTop: 10,
-                                            overflow: 'hidden',
-                                            fontSize: 16
-                                        }}
-                                        underlineColorAndroid='transparent'
-                                        value={this.state.senha}
-                                        onFocus={() => this.onFocusSenha()}
-                                        onBlur={() => this.onBlurSenha()}
-                                        onChangeText={this.handlePasswordChange}
-                                        placeholder="Senha"
-                                        placeholderTextColor="#9d9d9d" />
-                                </Item>
+                            <Item>
+                                <Image style={estilo.iconForm} source={require('../img/ico-login-senha.png')} />
+                                <Input
+                                    secureTextEntry={true}
+                                    style={{
+                                        width: wp('50%'),
+                                        paddingLeft: wp('5%'),
+                                        height: 55,
+                                        borderRadius: 10,
+                                        borderStyle: 'solid',
+                                        borderColor: this.state.borderColorSenha,
+                                        borderWidth: 1,
+                                        marginTop: 10,
+                                        overflow: 'hidden',
+                                        fontSize: 16
+                                    }}
+                                    underlineColorAndroid='transparent'
+                                    value={this.state.senha}
+                                    onFocus={() => this.onFocusSenha()}
+                                    onBlur={() => this.onBlurSenha()}
+                                    onChangeText={this.handlePasswordChange}
+                                    placeholder="Senha"
+                                    placeholderTextColor="#9d9d9d" />
+                            </Item>
 
 
-                                <Text style={estilo.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
+                            <Text style={estilo.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
 
-                                <TouchableOpacity onPress={this.handleSignInPress} >
-                                    <Image
-                                        style={estilo.buttonStyle}
-                                        source={require('../img/bt-entrar.png')} />
-                                </TouchableOpacity>
+                            <TouchableOpacity onPress={this.handleSignInPress} >
+                                <Image
+                                    style={estilo.buttonStyle}
+                                    source={require('../img/bt-entrar.png')} />
+                            </TouchableOpacity>
 
-                            </Content>
-                        </KeyboardAvoidingView>
-                    </View>
+                        <View style={{ height: 100 }} />
 
-                </View>
+                        </View>
 
-            </ImageBackground>
+                </Container>
+
+            </KeyboardAvoidingView>
+
 
         );
     }
@@ -267,7 +266,7 @@ const estilo = StyleSheet.create({
     },
 
     principal: {
-        flex: 4,
+        flex: 1,
     },
 
     imgBackground: {
