@@ -201,16 +201,20 @@ export default class telaProjetos extends Component {
                                                 flexDirection: 'row',
                                                 marginBottom: 10,
                                                 width: wp('80%'),
-                                                paddingBottom: 10,
-                                                paddingTop: 8,
-                                                borderBottomColor: '#c1c1c1',
-                                                borderBottomWidth: 1.0
+                                                paddingBottom: 5,
+                                                paddingTop: 8
                                             }}>
+                                                <View style={{paddingRight: wp('2%')}}>
+                                                    <Text style={{ fontSize: 12 }}>
+                                                        <Text style={{ color: '#2768ab' }}>EQ </Text>
+                                                        <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
+                                                    </Text>
+                                                </View>
                                                 <View>
                                                     <Text style={{
                                                         color: 'black',
                                                         fontSize: 12,
-                                                        paddingRight: wp('10%')
+                                                        paddingRight: wp('5%')
                                                     }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
                                                     </Text>
                                                 </View>
