@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Content, Card, CardItem, Footer, FooterTab, Container, Header, Left, Right, Body, Button, Icon, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import axios from '../services/axios';
@@ -206,7 +205,7 @@ export default class telaProjetos extends Component {
                                             }}>
                                                 <View style={{paddingRight: wp('2%')}}>
                                                     <Text style={{ fontSize: 12 }}>
-                                                        <Text style={{ color: '#2768ab' }}>EQ </Text>
+                                                        <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
                                                         <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
                                                     </Text>
                                                 </View>

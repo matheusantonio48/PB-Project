@@ -4,12 +4,16 @@ import Splash from './src/components/splash';
 import TelaLogin from './src/components/telaLogin';
 import TelaProjetos from './src/components/telaProjetos';
 import TelaTarefasResumo from './src/components/telaTarefasResumo';
+import TelaRegistros from './src/components/telaRegistros';
 
 export default props => (
   <Router>
 
     <Scene key="root">
     
+      <Scene key="TelaRegistros"
+          component={TelaRegistros}
+          hideNavBar={true} />
     
       <Scene key="TelaLogin"
         component={TelaLogin}
@@ -22,6 +26,7 @@ export default props => (
     <Scene key="TelaTarefasResumo"
         component={TelaTarefasResumo}
         hideNavBar={true} />
+
 
       <Scene key="Splash"
         component={Splash} 
