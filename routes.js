@@ -10,11 +10,7 @@ export default props => (
   <Router>
 
     <Scene key="root">
-    
-      <Scene key="TelaRegistros"
-          component={TelaRegistros}
-          hideNavBar={true} />
-    
+
       <Scene key="TelaLogin"
         component={TelaLogin}
         hideNavBar={true} />
@@ -27,6 +23,9 @@ export default props => (
         component={TelaTarefasResumo}
         hideNavBar={true} />
 
+      <Scene key="TelaRegistros"
+          component={TelaRegistros}
+          hideNavBar={true} />
 
       <Scene key="Splash"
         component={Splash} 
