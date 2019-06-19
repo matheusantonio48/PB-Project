@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Content, Card, CardItem, Footer, FooterTab, Container, Header, Left, Right, Body, Button, Icon, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
