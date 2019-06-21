@@ -256,6 +256,7 @@ const estilo = StyleSheet.create({
         width: wp('80%'),
         height: hp('10%'),
         marginTop: hp('8%'),
+        marginBottom: hp('15%'),
         justifyContent: 'center',
         margin: wp('10%')
     },

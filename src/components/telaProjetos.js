@@ -81,27 +81,27 @@ export default class telaProjetos extends Component {
     renderCorSituacao = (situacao) => {
         if (situacao === 3) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
             );
         } else if (situacao === 4) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
             );
         } else if (situacao === 7) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
             );
         } else if (situacao === 8) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#36d925' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#36d925' }}></View>
             );
         } else if (situacao === 9) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
             );
         } else {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100/2, marginTop: 5, backgroundColor: '#000000' }}></View>
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#000000' }}></View>
             );
         }
     }
@@ -145,7 +145,11 @@ export default class telaProjetos extends Component {
         return (
             <Container>
                 <Loading hide={this.state.isLoading}></Loading>
-                <Header transparent style={{ backgroundColor: 'white' }}>
+                <Header transparent style={{
+                    backgroundColor: 'white',
+                    borderRightColor: '#2768ab',
+                    borderRightWidth: 8.0
+                }}>
                     <Left>
                         <Button
                             transparent
@@ -157,7 +161,7 @@ export default class telaProjetos extends Component {
                     </Body>
                     <Right>
                         <View>
-                            <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.state.organizacao}.</Text>
+                            <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.state.organizacao}.</Text>
                             <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.state.usuario}</Text>
                         </View>
 
@@ -165,15 +169,27 @@ export default class telaProjetos extends Component {
                 </Header>
 
 
-                <Content padder style={{ width: wp('100%') }}>
-                    <Text style={{ fontWeight: '900', fontSize: 25 }}>FOCO</Text>
+                <Content style={{ width: wp('100%') }}>
+                    <Text style={{
+                        fontWeight: '900',
+                        color: '#313131',
+                        backgroundColor: '#f4f4f4',
+                        fontSize: 25,
+                        paddingLeft: '3%',
+                        paddingTop: hp('2%'),
+                        paddingBottom: hp('2%')
+                    }}>FOCO</Text>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
-                            style={{ backgroundColor: 'white', marginBottom: 10 }}>
+                            style={{ backgroundColor: 'white', marginBottom: 3 }}>
                             <TouchableOpacity onPress={() => this.mudaTelaResumo(item)}>
 
                                 <Card style={{
-                                    backgroundColor: '#dcdcdc', paddingRight: '8%', paddingLeft: '2%', paddingTop: 8, paddingBottom: 5
+                                    backgroundColor: '#dcdcdc',
+                                    paddingRight: '8%',
+                                    paddingLeft: '1%',
+                                    paddingTop: 5,
+                                    width: wp('100%')
                                 }}>
                                     <CardItem style={{ backgroundColor: '#dcdcdc' }}>
                                         <View>
@@ -203,7 +219,7 @@ export default class telaProjetos extends Component {
                                                 paddingBottom: 5,
                                                 paddingTop: 8
                                             }}>
-                                                <View style={{paddingRight: wp('2%')}}>
+                                                <View style={{ paddingRight: wp('2%') }}>
                                                     <Text style={{ fontSize: 12 }}>
                                                         <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
                                                         <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
@@ -220,7 +236,7 @@ export default class telaProjetos extends Component {
 
 
                                                 <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
-                                                {this.renderCorSituacao(item.situacao)}
+                                                    {this.renderCorSituacao(item.situacao)}
                                                     <Text style={{
                                                         color: 'black',
                                                         fontSize: 12,

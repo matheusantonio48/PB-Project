@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { StyleSheet, Image, View } from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import axios from '../services/axios';
 
 import {
     Container,
@@ -20,8 +24,19 @@ export default class telaRegistros extends Component {
         super(props);
 
         this.state = {
-
+            registros: []
         }
+    }
+
+    async componentDidMount() {
+        let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
+
+        axios.post('/v1/registro/listar', { "tarefa": 19274 }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+            .then(response => {
+                console.log(response.data);
+            }).catch(error => {
+                console.log('Error: ' + error);
+            });
     }
 
     render() {

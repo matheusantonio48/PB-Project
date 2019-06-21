@@ -18,17 +18,17 @@ export default props => (
       <Scene key="TelaProjetos"
         component={TelaProjetos}
         hideNavBar={true} />
-    
-    <Scene key="TelaTarefasResumo"
+
+      <Scene key="TelaTarefasResumo"
         component={TelaTarefasResumo}
         hideNavBar={true} />
 
       <Scene key="TelaRegistros"
-          component={TelaRegistros}
-          hideNavBar={true} />
+        component={TelaRegistros}
+        hideNavBar={true} />
 
       <Scene key="Splash"
-        component={Splash} 
+        component={Splash}
         hideNavBar={true} />
 
     </Scene>
