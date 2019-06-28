@@ -1,91 +1,96 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { StyleSheet, Image, View, TouchableOpacity, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Actions } from 'react-native-router-flux';
+import { StackActions } from 'react-navigation';
+
 import {
   Container,
   Header,
-  Title,
   Content,
   Button,
-  Icon,
   Left,
   Right,
   Body,
   Text,
-  ListItem,
-  List,
-  Footer,
-  FooterTab,
   Card,
   CardItem
 } from "native-base";
 
-import { Actions } from 'react-native-router-flux';
+import axios from '../services/axios';
 
+export default class telaTarefasResumo extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+      dispatch: PropTypes.func,
+    }).isRequired,
+  };
 
-class HeaderNB extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.proj);
     this.state = {
       projetos: [],
+      comps: [],
       componentes: [],
-      projetoComp: [],
-      nomes: [],
-      tab1: false,
-      tab2: false,
-      tab3: true,
-      tab4: false
-    };
-  }
-  toggleTab1() {
-    this.setState({
-      tab1: true,
-      tab2: false,
-      tab3: false,
-      tab4: false
-    });
-  }
-  toggleTab2() {
-    this.setState({
-      tab1: false,
-      tab2: true,
-      tab3: false,
-      tab4: false
-    });
-  }
-  toggleTab3() {
-    this.setState({
-      tab1: false,
-      tab2: false,
-      tab3: true,
-      tab4: false
-    });
-  }
-  toggleTab4() {
-    this.setState({
-      tab1: false,
-      tab2: false,
-      tab3: false,
-      tab4: true
-    });
+      comentarios: [],
+      envolvimento: [],
+      registro: [],
+      idPessoa: []
+    }
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
+    this.state.projetos = this.props.proj;
     updateState = (response) => {
       this.setState({ componentes: response });
     }
 
-    this.props.proj.componentes.forEach(componente => {
-      this.state.projetoComp.push(componente);
-      this.state.nomes.push(componente.nome);
-    });
+    let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
+    let componenteCompleto = []
+    componenteCompleto.push(this.state.projetos);
 
-    // console.log(this.state.projetoComp);
+    axios.post('/v1/componente/listar', { "id": this.props.proj.id, "somenteUltimoNivel": 1 }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+      .then(responseComp => {
+        updateState(responseComp.data.lista);
+        responseComp.data.lista.forEach(componente => {
+          axios.post('/v1/envolvimento/listar', { 'idTarefa': componente.id }, { headers: { Authorization: 'Bearer ' + tokenPB } }) // 5115
+            .then(response => {
+              this.setState({ envolvimento: response.data.lista })
+              // console.log(response);
+            }).catch(error => {
+              console.log('Error: ' + error);
+            });
+          axios.post('/v1/registro/listar', { 'tarefa': componente.id }, { headers: { Authorization: 'Bearer ' + tokenPB } }) // 5115
+            .then(response => {
+              this.setState({ registro: response.data.lista })
+              componenteCompleto.push(response.data.lista);
+              this.setState({ comps: componenteCompleto });
+              // this.state.projs = this.state.projetos.concat(this.state.registro);
+            }).catch(error => {
+              console.log('Error: ' + error);
+            });
+        })
+      }).catch(error => {
+        console.log('Error: ' + error);
+      });
+  }
+
+  async componentDidMount() {
+
   }
 
   telaAnterior = () => {
     Actions.pop();
+  }
+
+  proximaTela(comp) {
+    Actions.TelaRegistros({ proj: this.props.proj, comp: comp, org: this.props.org, user: this.props.user });
+    const resetAction = StackActions.reset({
+      index: 0,
+    });
   }
 
   renderCorSituacao = (situacao) => {
@@ -144,11 +149,17 @@ class HeaderNB extends Component {
     }
   }
 
-
   render() {
     return (
-      <Container style={styles.container}>
-        <Header transparent style={{ backgroundColor: 'white' }}>
+      <Container>
+        {/* {this.state.registro.map((item, key) => (
+          console.log(item.descricao)
+        ))} */}
+        <Header transparent style={{
+          backgroundColor: 'white',
+          borderRightColor: '#2768ab',
+          borderRightWidth: 8.0
+        }}>
           <Left>
             <Button
               transparent
@@ -156,20 +167,27 @@ class HeaderNB extends Component {
               <Image style={styles.logoStyle} source={require('../img/logo-internas-pb.png')} />
             </Button>
           </Left>
-
           <Body>
           </Body>
-
           <Right>
             <View>
-              <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
+              <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
               <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.props.user}</Text>
             </View>
+
           </Right>
         </Header>
 
         <Content>
-          <Text style={{ fontWeight: '900', fontSize: 25 }}>REGISTROS</Text>
+          <Text style={{
+            fontWeight: '900',
+            color: '#313131',
+            backgroundColor: '#f4f4f4',
+            fontSize: 25,
+            paddingLeft: '3%',
+            paddingTop: hp('2%'),
+            paddingBottom: hp('2%')
+          }}>REGISTROS</Text>
           <Card>
             <TouchableOpacity onPress={() => this.telaAnterior()}>
               <CardItem style={{
@@ -242,85 +260,57 @@ class HeaderNB extends Component {
               </CardItem>
             </TouchableOpacity>
 
-            {/* {this.props.proj.componentes.forEach(comp => {
-              <View>
-              {console.log(comp.nome)}
-                <CardItem style={{ flexDirection: 'row' }}>
-                  <View style={{ flexDirection: 'row' }}>
-                  <Text style={{ textAlign: 'left' }}>
-                      <Text style={{ fontWeight: '600', fontSize: 14 }}>Nome de teste da tarefa {comp.nome}</Text>
-                      </Text>
-                      </View>
+            {this.state.componentes.map((item, key) => (
+              <TouchableOpacity key={key} onPress={() => this.proximaTela(item)}>
+                <View>
+                  {item.fimReal === '' && item.inicioReal !== '' ?
+                    <View>
+                      <CardItem style={{ flex: 1, flexDirection: 'row' }}>
+                        <Body style={{ flex: 1 }}>
+                          <View>
+                            <Text style={{ textAlign: 'left' }}>
+                              <Text style={{ fontWeight: '600', fontSize: 14 }}> {item.nome} </Text>
+                            </Text>
+                          </View>
+                          <View style={{ justifyContent: 'space-between' }}>
+                            {/* <View>
+                          <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Nome</Text></Text>
+                        </View> */}
+                            <View>
+                              <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>{item.fimPrevisto}</Text></Text>
+                            </View>
+                          </View>
+                          {/* {this.state.registro.map((reg, keyReg) => ( */}
+                          <View>
+                            {/* {reg.descricao !== '' ? */}
+                              <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text>
+                              {/* : <View></View> */}
+                            {/* } */}
+                          </View>
+                          {/* ))} */}
+                        </Body>
                       </CardItem>
-
-                <CardItem style={{ flexDirection: 'row' }}>
-                  <View style={{ justifyContent: 'space-between' }}>
-                    <View>
-                      <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Nome</Text></Text>
-                    </View>
-                    <View>
-                      <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>01/01/2000</Text></Text>
-                    </View>
-                  </View>
-                </CardItem>
-
-                <CardItem style={{ flexDirection: 'row' }}>
-                  <View>
-                    <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a arcu condimentum, ullamcorper arcu non, sodales odio. Morbi non ex scelerisque, tristique sapien et, tempor orci. Fusce tristique orci eu lorem pharetra bibendum. Nulla consequat, erat id hendrerit feugiat, orci turpis blandit risus, vitae efficitur quam quam vitae metus. Nulla maximus magna at nunc finibus, interdum eleifend est porta. Cras a finibus mi. Proin eros turpis, rhoncus vel erat sit amet, bibendum vulputate velit. Praesent tincidunt eget orci vitae porta. Duis vehicula lacinia nibh, et elementum velit. Sed id purus in justo sollicitudin viverra vel ut massa. Duis sagittis eleifend neque eget porta. </Text>
-                  </View>
-                </CardItem>
-              </View>
-            })} */}
-
+                    </View> : <View></View>
+                  }
+                </View>
+              </TouchableOpacity>
+            ))}
           </Card>
-          {this.props.proj.componentes.map((comp, key) => {
-            { console.log(comp.nome) } 
-            <FlatList>
-              <Text style={{color: '#000000'}}>{comp.nome}</Text>
-            </FlatList>
-          })}
-          {/* {this.props.proj.componentes.map((comp, key) => {
-            { console.log(comp.nome) } 
-            <View key={key}>
-              <Text>{comp.nome}</Text>
-            </View>
-          })} */}
         </Content>
-        {/* <Footer >
-          <FooterTab style={{ backgroundColor: 'white' }}>
-            <Button active={this.state.tab1} onPress={() => this.toggleTab1()} >
-              <Icon style={{ color: '#dcdcdc' }} active={this.state.tab1} name="home" />
-            </Button>
-            <Button active={this.state.tab2} onPress={() => this.toggleTab2()}>
-              <Icon style={{ color: '#dcdcdc' }} active={this.state.tab2} name="area-graph" />
-            </Button>
-            <Button active={this.state.tab3} onPress={() => this.toggleTab3()}>
-              <Icon style={{ color: '#dcdcdc' }} active={this.state.tab3} name="contact" />
-            </Button>
-            <Button active={this.state.tab4} onPress={() => this.toggleTab4()}>
-              <Icon style={{ color: '#dcdcdc' }} active={this.state.tab4} name="cog" />
-            </Button>
-          </FooterTab>
-        </Footer> */}
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white"
-  },
   icoSeta: {
     width: wp('3%'),
     height: hp('3%'),
     resizeMode: 'contain'
   },
   logoStyle: {
-    width: wp('45%'),
-    height: hp('50%'),
+    width: wp('35%'),
+    height: hp('40%'),
     resizeMode: 'contain'
   }
 });
-
-export default HeaderNB;

@@ -45,8 +45,8 @@ export default class telaProjetos extends Component {
 
 
     async componentDidMount() {
-        updateState = (response) => {
-            this.setState({ projetos: response });
+        updateState = (response, response2) => {
+            this.setState({ projetos: response, componentes: response2 });
         }
 
         updateLoad = () => {
@@ -58,11 +58,11 @@ export default class telaProjetos extends Component {
         axios.get('/v1/projeto/listar', { headers: { Authorization: 'Bearer ' + tokenPB } })
             .then(response => {
                 response.data.lista.forEach(function (projeto) {
-                    axios.post('/v1/componente/listar', { "id": projeto.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+                    axios.post('/v1/componente/listar', { "id": projeto.id, "somenteUltimoNivel": 1 }, { headers: { Authorization: 'Bearer ' + tokenPB } })
                         .then(responseComp => {
                             projeto.componentes = responseComp.data.lista;
                             projetoComp.push(projeto);
-                            updateState(projetoComp);
+                            updateState(projetoComp, responseComp.data.lista);
                         }).catch(error => {
                             console.log('Error: ' + error);
                         });
@@ -72,10 +72,6 @@ export default class telaProjetos extends Component {
             }).finally(function () {
                 updateLoad();
             });
-    }
-
-
-    alteraLogo() {
     }
 
     renderCorSituacao = (situacao) => {
@@ -134,8 +130,8 @@ export default class telaProjetos extends Component {
         }
     }
 
-    mudaTelaResumo = (proj) => {
-        Actions.TelaTarefasResumo({ proj: proj, org: this.state.organizacao, user: this.state.usuario });
+    mudaTelaResumo = (proj, comp) => {
+        Actions.TelaTarefasResumo({ proj: proj, comp: comp, org: this.state.organizacao, user: this.state.usuario });
         const resetAction = StackActions.reset({
             index: 0,
         });
@@ -182,77 +178,79 @@ export default class telaProjetos extends Component {
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
                             style={{ backgroundColor: 'white', marginBottom: 3 }}>
-                            <TouchableOpacity onPress={() => this.mudaTelaResumo(item)}>
 
-                                <Card style={{
-                                    backgroundColor: '#dcdcdc',
-                                    paddingRight: '8%',
-                                    paddingLeft: '1%',
-                                    paddingTop: 5,
-                                    width: wp('100%')
-                                }}>
-                                    <CardItem style={{ backgroundColor: '#dcdcdc' }}>
-                                        <View>
-                                            <View style={{
-                                                flex: 1,
-                                                flexDirection: 'row',
-                                                maxWidth: '90%'
-                                            }}>
-                                                <Text style={{
-                                                    color: 'black',
-                                                    fontWeight: 'normal',
-                                                    fontSize: 14
-                                                }}>Projeto: </Text>
-                                                <Text style={{
-                                                    color: 'black',
-                                                    fontWeight: 'bold',
-                                                    fontSize: 14
-                                                }}>{item.nome}
-                                                </Text>
-                                            </View>
+                            {item.fimReal === '' ?
+                                <TouchableOpacity onPress={() => this.mudaTelaResumo(item, item.componentes)}>
 
-                                            <View style={{
-                                                flex: 1,
-                                                flexDirection: 'row',
-                                                marginBottom: 10,
-                                                width: wp('80%'),
-                                                paddingBottom: 5,
-                                                paddingTop: 8
-                                            }}>
-                                                <View style={{ paddingRight: wp('2%') }}>
-                                                    <Text style={{ fontSize: 12 }}>
-                                                        <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
-                                                        <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
-                                                    </Text>
-                                                </View>
-                                                <View>
+                                    <Card style={{
+                                        backgroundColor: '#dcdcdc',
+                                        paddingRight: '8%',
+                                        paddingLeft: '1%',
+                                        paddingTop: 5,
+                                        width: wp('100%')
+                                    }}>
+                                        <CardItem style={{ backgroundColor: '#dcdcdc' }}>
+                                            <View>
+                                                <View style={{
+                                                    flex: 1,
+                                                    flexDirection: 'row',
+                                                    maxWidth: '90%'
+                                                }}>
                                                     <Text style={{
                                                         color: 'black',
-                                                        fontSize: 12,
-                                                        paddingRight: wp('5%')
-                                                    }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
-                                                    </Text>
-                                                </View>
-
-
-                                                <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
-                                                    {this.renderCorSituacao(item.situacao)}
+                                                        fontWeight: 'normal',
+                                                        fontSize: 14
+                                                    }}>Projeto: </Text>
                                                     <Text style={{
                                                         color: 'black',
-                                                        fontSize: 12,
-                                                        textAlign: 'left',
-                                                        paddingLeft: wp('2%')
-                                                    }}>
-                                                        {this.renderSituacao(item.situacao)}
+                                                        fontWeight: 'bold',
+                                                        fontSize: 14
+                                                    }}>{item.nome}
                                                     </Text>
                                                 </View>
 
-                                                <View>
-                                                    <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir-white.png')} />
-                                                </View>
+                                                <View style={{
+                                                    flex: 1,
+                                                    flexDirection: 'row',
+                                                    marginBottom: 10,
+                                                    width: wp('80%'),
+                                                    paddingBottom: 5,
+                                                    paddingTop: 8
+                                                }}>
+                                                    <View style={{ paddingRight: wp('2%') }}>
+                                                        <Text style={{ fontSize: 12 }}>
+                                                            <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
+                                                            <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
+                                                        </Text>
+                                                    </View>
+                                                    <View>
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: 12,
+                                                            paddingRight: wp('5%')
+                                                        }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
+                                                        </Text>
+                                                    </View>
 
-                                            </View>
-                                            {/* <View style={{
+
+                                                    <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                                        {this.renderCorSituacao(item.situacao)}
+                                                        <Text style={{
+                                                            color: 'black',
+                                                            fontSize: 12,
+                                                            textAlign: 'left',
+                                                            paddingLeft: wp('2%')
+                                                        }}>
+                                                            {this.renderSituacao(item.situacao)}
+                                                        </Text>
+                                                    </View>
+
+                                                    <View>
+                                                        <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir-white.png')} />
+                                                    </View>
+
+                                                </View>
+                                                {/* <View style={{
                                             flex: 1,
                                             flexDirection: 'row',
                                             justifyContent: 'flex-end',
@@ -261,85 +259,14 @@ export default class telaProjetos extends Component {
                                         }}>
                                             <Thumbnail style={{ width: 25, height: 25 }} source={require('../img/ico-abrir-box.png')} />
                                         </View> */}
-                                        </View>
-                                    </CardItem>
-                                </Card>
-                            </TouchableOpacity>
-                            {/* <CollapseBody style={{
-                                    flex: 1,
-                                    flexDirection: 'column',
-                                    justifyContent: 'flex-start',
-                                    paddingTop: 22,
-                                    paddingLeft: 22
-                                }}>
-                                    {item.componentes.map((comp, key) => (
-                                        <TouchableOpacity onPress={() => this.mudaTelaResumo(comp, item)} key={key}>
-                                            <View style={{ paddingTop: 20 }}>
-                                                <View>
-
-                                                    <Text style={{
-                                                        color: 'black',
-                                                        fontWeight: 'bold',
-                                                        fontSize: 16
-                                                    }}>{comp.nome} </Text>
-                                                </View>
-
-                                                <View style={{
-                                                    flex: 1,
-                                                    flexDirection: 'row',
-                                                    justifyContent: "space-around",
-                                                    marginBottom: 10,
-                                                    paddingBottom: 10,
-                                                    paddingTop: 8,
-                                                    borderBottomColor: '#c1c1c1',
-                                                    borderBottomWidth: 1.0
-                                                }}>
-                                                    <View style={{ flex: 1, justifyContent: 'flex-start', marginStart: 0 }}>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: 12,
-                                                            fontWeight: '900'
-                                                        }}>Fim Previsto: {comp.fimPrevisto}
-                                                        </Text>
-                                                    </View>
-
-                                                    {this.renderCorSituacao(comp.situacao)}
-
-                                                    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            paddingLeft: 10,
-                                                            fontSize: 12
-                                                        }}>
-                                                            {this.renderSituacao(comp.situacao)}
-                                                        </Text>
-                                                    </View>
-
-                                                </View>
                                             </View>
-                                        </TouchableOpacity>
-                                    ))}
-                                </CollapseBody> */}
+                                        </CardItem>
+                                    </Card>
+                                </TouchableOpacity> : <View></View>
+                            }
                         </View>
                     ))}
                 </Content>
-
-                {/* <Footer >
-                    <FooterTab style={{ backgroundColor: 'white' }}>
-                        <Button active={this.state.tab1}>
-                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab1} name="home" />
-                        </Button>
-                        <Button active={this.state.tab2}>
-                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab2} name="area-graph" />
-                        </Button>
-                        <Button active={this.state.tab3}>
-                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab3} name="contact" />
-                        </Button>
-                        <Button active={this.state.tab4}>
-                            <Icon style={{ color: '#dcdcdc' }} active={this.state.tab4} name="cog" />
-                        </Button>
-                    </FooterTab>
-                </Footer> */}
 
             </Container>
         );

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Actions } from 'react-native-router-flux';
 
 import axios from '../services/axios';
 
@@ -24,25 +25,47 @@ export default class telaRegistros extends Component {
         super(props);
 
         this.state = {
-            registros: []
+            registros: [],
+            envolvimentos: []
         }
     }
 
     async componentDidMount() {
-        let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
+        let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token'); //treinamentos em gerenciamentos de projetos
 
-        axios.post('/v1/registro/listar', { "tarefa": 19274 }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+        axios.post('/v1/registro/listar', { "tarefa": this.props.comp.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
             .then(response => {
-                console.log(response.data);
+                this.setState({ registros: response.data.lista })
             }).catch(error => {
                 console.log('Error: ' + error);
             });
+
+        axios.post('/v1/envolvimento/listar', { "idTarefa": this.props.comp.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+            .then(response => {
+                this.setState({ envolvimentos: response.data.lista });
+                console.log(response);
+            })
+    }
+
+    telaAnterior = () => {
+        Actions.pop();
+    }
+
+    telaProjetos = () => {
+        Actions.popTo('TelaProjetos');
     }
 
     render() {
         return (
             <Container>
-                <Header transparent style={{ backgroundColor: 'white' }}>
+                {this.state.envolvimentos.map((item, key) => (
+                    console.log(item.idEnvolvimento)
+                ))}
+                <Header transparent style={{
+                    backgroundColor: 'white',
+                    borderRightColor: '#2768ab',
+                    borderRightWidth: 8.0
+                }}>
                     <Left>
                         <Button
                             transparent
@@ -54,18 +77,26 @@ export default class telaRegistros extends Component {
                     </Body>
                     <Right>
                         <View>
-                            <Text style={{ textAlign: 'right', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.state.organizacao}.</Text>
-                            <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.state.usuario}</Text>
+                            <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
+                            <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.props.user}</Text>
                         </View>
 
                     </Right>
                 </Header>
 
                 <Content padder style={{ width: wp('100%') }}>
-                    <Text style={{ fontWeight: '900', fontSize: 25 }}>REGISTROS</Text>
+                    <Text style={{
+                        fontWeight: '900',
+                        color: '#313131',
+                        backgroundColor: '#f4f4f4',
+                        fontSize: 25,
+                        paddingLeft: '3%',
+                        paddingTop: hp('2%'),
+                        paddingBottom: hp('2%')
+                    }}>REGISTROS</Text>
                     <View>
 
-                        <View>
+                        <TouchableOpacity onPress={() => this.telaProjetos()}>
                             <CardItem>
                                 <View style={{
                                     flex: 1,
@@ -77,7 +108,7 @@ export default class telaRegistros extends Component {
                                             fontWeight: '900',
                                             fontSize: 14,
                                             position: 'absolute'
-                                        }}>PROJETO NomeProjeto</Text>
+                                        }}>{this.props.proj.nome}</Text>
                                     </Left>
 
                                     <Right>
@@ -88,9 +119,9 @@ export default class telaRegistros extends Component {
 
                                 </View>
                             </CardItem>
-                        </View>
+                        </TouchableOpacity>
 
-                        <View>
+                        <TouchableOpacity onPress={() => this.telaAnterior()}>
                             <CardItem>
                                 <View style={{
                                     flex: 1,
@@ -101,25 +132,24 @@ export default class telaRegistros extends Component {
                                             color: 'black',
                                             fontWeight: '900',
                                             fontSize: 14,
-                                            position: 'absolute'
-                                        }}>TAREFA NomeTarefa - NomeProjeto</Text>
+                                            position: 'absolute',
+                                            maxWidth: wp('80%')
+                                        }}>{this.props.comp.nome} - {this.props.proj.nome}</Text>
                                     </Left>
 
                                     <Right>
-                                        <View>
-                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar.png')} />
-                                        </View>
+                                        <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar.png')} />
                                     </Right>
 
                                 </View>
                             </CardItem>
-                        </View>
+                        </TouchableOpacity>
 
                         <View>
                             <CardItem style={{ flexDirection: 'row', backgroundColor: '#dcdcdc' }}>
                                 <Left>
                                     <Text style={{ textAlign: 'left' }}>
-                                        <Text style={{ fontWeight: '600', fontSize: 14 }}>Testes app fase 02 - Desenvolvimento</Text>
+                                        <Text style={{ fontWeight: '600', fontSize: 14 }}>{this.props.proj.nome}</Text>
                                     </Text>
                                 </Left>
                                 <Text style={{ fontSize: 12, backgroundColor: '#ffffff', paddingLeft: 10, paddingRight: 10, borderRadius: 100 / 20 }}>
@@ -134,23 +164,31 @@ export default class telaRegistros extends Component {
                                     flexDirection: 'row'
                                 }}>
                                     <Left>
-                                        <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Luiz Braum</Text></Text>
+                                        {/* <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Luiz Braum</Text></Text> */}
                                     </Left>
                                     <Right>
-                                        <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>19/04/2019</Text></Text>
+                                        <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>{this.props.proj.fimPrevisto}</Text></Text>
                                     </Right>
                                 </View>
                             </CardItem>
 
-                            <CardItem style={{
-                                borderBottomColor: '#c1c1c1',
-                                borderBottomWidth: 1.0,
-                            }}>
-                                <View>
-                                    <Text> <Text style={{ fontSize: 16 }}>Comentário: </Text> <Text style={{ fontWeight: '400', fontSize: 12 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a arcu condimentum, ullamcorper arcu non, sodales odio. Morbi non ex scelerisque, tristique sapien et, tempor orci. Fusce tristique orci eu lorem pharetra bibendum. Nulla consequat, erat id hendrerit feugiat, orci turpis blandit risus, vitae efficitur quam quam vitae metus. Nulla maximus magna at nunc finibus, interdum eleifend est porta. Cras a finibus mi. Proin eros turpis, rhoncus vel erat sit amet, bibendum vulputate velit. Praesent tincidunt eget orci vitae porta. Duis vehicula lacinia nibh, et elementum velit. Sed id purus in justo sollicitudin viverra vel ut massa. Duis sagittis eleifend neque eget porta.</Text></Text>
-                                    <Right><Text style={{ fontSize: 12, color: '#a3a3a3' }}>Autor: Luiz Braum</Text></Right>
+                            {this.state.registros.map((item, key) => (
+                                <View key={key}>
+                                    {item.descricao !== '' && item.descricao !== undefined && item.descricao !== null ?
+                                        <CardItem style={{
+                                            borderBottomColor: '#c1c1c1',
+                                            borderBottomWidth: 1.0,
+                                        }}>
+                                            <View>
+                                                <Text> <Text style={{ fontSize: 16 }}>Comentário: </Text> <Text style={{ fontWeight: '400', fontSize: 12 }}>{item.descricao}</Text></Text>
+                                                {/* <Right><Text style={{ fontSize: 12, color: '#a3a3a3' }}>Autor: Luiz Braum</Text></Right> */}
+                                            </View>
+                                        </CardItem> : <View></View>
+                                    }
+
                                 </View>
-                            </CardItem>
+
+                            ))}
                         </View>
                     </View>
                 </Content>
