@@ -58,9 +58,6 @@ export default class telaRegistros extends Component {
     render() {
         return (
             <Container>
-                {this.state.envolvimentos.map((item, key) => (
-                    console.log(item.idEnvolvimento)
-                ))}
                 <Header transparent style={{
                     backgroundColor: 'white',
                     borderRightColor: '#2768ab',
@@ -146,17 +143,25 @@ export default class telaRegistros extends Component {
                         </TouchableOpacity>
 
                         <View>
-                            <CardItem style={{ flexDirection: 'row', backgroundColor: '#dcdcdc' }}>
-                                <Left>
-                                    <Text style={{ textAlign: 'left' }}>
-                                        <Text style={{ fontWeight: '600', fontSize: 14 }}>{this.props.proj.nome}</Text>
-                                    </Text>
-                                </Left>
-                                <Text style={{ fontSize: 12, backgroundColor: '#ffffff', paddingLeft: 10, paddingRight: 10, borderRadius: 100 / 20 }}>
-                                    <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
-                                    <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
-                                </Text>
-                            </CardItem>
+                            {this.state.envolvimentos.map((item, keyEnv) => (
+                                <View key={keyEnv}>
+                                    {item.idUsuario === 5115 ?
+                                        <View>
+                                            <CardItem style={{ flexDirection: 'row', backgroundColor: '#dcdcdc' }}>
+                                                <Left>
+                                                    <Text style={{ textAlign: 'left' }}>
+                                                        <Text style={{ fontWeight: '600', fontSize: 14 }}>{this.props.proj.nome}</Text>
+                                                    </Text>
+                                                </Left>
+                                                <Text style={{ fontSize: 12, backgroundColor: '#ffffff', paddingLeft: 10, paddingRight: 10, borderRadius: 100 / 20 }}>
+                                                    <Text style={{ color: '#2768ab', fontWeight: '900' }}>{item.idEnvolvimento} </Text>
+                                                    {/* <Text style={{ fontSize: 12 }}>[ p3 ]</Text> */}
+                                                </Text>
+                                            </CardItem>
+                                        </View> : <View></View>}
+                                </View>
+
+                            ))}
 
                             <CardItem style={{ flexDirection: 'row', backgroundColor: '#dcdcdc' }}>
                                 <View style={{
@@ -172,23 +177,27 @@ export default class telaRegistros extends Component {
                                 </View>
                             </CardItem>
 
-                            {this.state.registros.map((item, key) => (
-                                <View key={key}>
-                                    {item.descricao !== '' && item.descricao !== undefined && item.descricao !== null ?
-                                        <CardItem style={{
-                                            borderBottomColor: '#c1c1c1',
-                                            borderBottomWidth: 1.0,
-                                        }}>
-                                            <View>
-                                                <Text> <Text style={{ fontSize: 16 }}>Comentário: </Text> <Text style={{ fontWeight: '400', fontSize: 12 }}>{item.descricao}</Text></Text>
-                                                {/* <Right><Text style={{ fontSize: 12, color: '#a3a3a3' }}>Autor: Luiz Braum</Text></Right> */}
-                                            </View>
-                                        </CardItem> : <View></View>
-                                    }
+                            {this.state.registros !== undefined ?
+                                <View>
+                                    {this.state.registros.map((item, key) => (
+                                        <View key={key}>
+                                            {item !== undefined && item.descricao !== '' && item.descricao !== undefined && item.descricao !== null ?
+                                                <CardItem style={{
+                                                    borderBottomColor: '#c1c1c1',
+                                                    borderBottomWidth: 1.0,
+                                                }}>
+                                                    <View>
+                                                        <Text> <Text style={{ fontSize: 16 }}>Comentário: </Text> <Text style={{ fontWeight: '400', fontSize: 12 }}>{item.descricao}</Text></Text>
+                                                        {/* <Right><Text style={{ fontSize: 12, color: '#a3a3a3' }}>Autor: Luiz Braum</Text></Right> */}
+                                                    </View>
+                                                </CardItem> : <View></View>
+                                            }
 
-                                </View>
+                                        </View>
 
-                            ))}
+                                    ))}
+                                </View> : <View></View>
+                            }
                         </View>
                     </View>
                 </Content>

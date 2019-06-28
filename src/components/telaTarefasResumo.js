@@ -132,7 +132,7 @@ export default class telaTarefasResumo extends Component {
       );
     } else if (situacao === 7) {
       return (
-        <Text style={{ textAlign: 'left', fontSize: 12 }}>Atraso</Text>
+        <Text style={{ textAlign: 'left', fontSize: 12 }}>Em Atraso</Text>
       );
     } else if (situacao === 8) {
       return (
@@ -152,9 +152,6 @@ export default class telaTarefasResumo extends Component {
   render() {
     return (
       <Container>
-        {/* {this.state.registro.map((item, key) => (
-          console.log(item.descricao)
-        ))} */}
         <Header transparent style={{
           backgroundColor: 'white',
           borderRightColor: '#2768ab',
@@ -224,9 +221,7 @@ export default class telaTarefasResumo extends Component {
                       marginBottom: 10,
                       width: wp('80%'),
                       paddingBottom: 10,
-                      paddingTop: 8,
-                      borderBottomColor: '#c1c1c1',
-                      borderBottomWidth: 1.0
+                      paddingTop: 8
                     }}>
                       <View>
                         <Text style={{
@@ -259,42 +254,75 @@ export default class telaTarefasResumo extends Component {
                 </Body>
               </CardItem>
             </TouchableOpacity>
-
-            {this.state.componentes.map((item, key) => (
-              <TouchableOpacity key={key} onPress={() => this.proximaTela(item)}>
-                <View>
-                  {item.fimReal === '' && item.inicioReal !== '' ?
-                    <View>
-                      <CardItem style={{ flex: 1, flexDirection: 'row' }}>
-                        <Body style={{ flex: 1 }}>
-                          <View>
-                            <Text style={{ textAlign: 'left' }}>
-                              <Text style={{ fontWeight: '600', fontSize: 14 }}> {item.nome} </Text>
-                            </Text>
-                          </View>
-                          <View style={{ justifyContent: 'space-between' }}>
-                            {/* <View>
-                          <Text style={{ fontSize: 12 }}>Publicado por: <Text style={{ fontWeight: '600', fontSize: 12 }}>Nome</Text></Text>
-                        </View> */}
+              <View>
+                  <View>
+                    {this.state.componentes.map((item, key) => (
+                      <TouchableOpacity key={key} onPress={() => this.proximaTela(item)}>
+                        <View>
+                          {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
+                          {item.id === 19190 || item.id === 19716 || item.id === 19191 || item.id === 19192 || item.id === 21410 ?
                             <View>
-                              <Text style={{ fontSize: 12 }}>Fim previsto: <Text style={{ fontWeight: '600', fontSize: 12 }}>{item.fimPrevisto}</Text></Text>
-                            </View>
-                          </View>
-                          {/* {this.state.registro.map((reg, keyReg) => ( */}
-                          <View>
-                            {/* {reg.descricao !== '' ? */}
-                              <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text>
-                              {/* : <View></View> */}
-                            {/* } */}
-                          </View>
-                          {/* ))} */}
-                        </Body>
-                      </CardItem>
-                    </View> : <View></View>
-                  }
-                </View>
-              </TouchableOpacity>
-            ))}
+                              <CardItem style={{ flex: 1, flexDirection: 'row' }}>
+                                <Body style={{ flex: 1 }}>
+                                  <View>
+                                    <Text style={{ textAlign: 'left' }}>
+                                      <Text style={{ fontWeight: '600', fontSize: 14 }}> {item.nome} </Text>
+                                    </Text>
+                                  </View>
+                                  <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    marginBottom: 10,
+                                    width: wp('80%'),
+                                    paddingBottom: 10,
+                                    paddingTop: 8
+                                  }}>
+                                    <View>
+                                      <Text style={{
+                                        color: 'black',
+                                        fontSize: 12,
+                                        paddingRight: wp('10%')
+                                      }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
+                                      </Text>
+                                    </View>
+
+
+                                    <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                      {this.renderCorSituacao(item.situacao)}
+                                      <Text style={{
+                                        color: 'black',
+                                        fontSize: 12,
+                                        textAlign: 'left',
+                                        paddingLeft: wp('2%')
+                                      }}>
+                                        {this.renderSituacao(item.situacao)}
+                                      </Text>
+                                    </View>
+
+                                    <View>
+                                      <Image style={styles.icoSeta} source={require('../img/ico-seta-esq-fechar-white.png')} />
+                                    </View>
+
+                                  </View>
+                                  {/* {this.state.registro.map((reg, keyReg) => ( */}
+                                  <View>
+                                    {/* {reg.descricao !== '' ? */}
+                                      {/* <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text> */}
+                                      {/* : <View></View> */}
+                                    {/* } */}
+                                  </View>
+                                  {/* ))} */}
+                                </Body>
+                              </CardItem>
+                            </View> : <View></View>
+                          }
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+
+                  </View>
+              </View>
+            
           </Card>
         </Content>
       </Container>

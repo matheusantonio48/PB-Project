@@ -113,7 +113,7 @@ export default class telaProjetos extends Component {
             );
         } else if (situacao === 7) {
             return (
-                <Text style={{ textAlign: 'left' }}>Atraso</Text>
+                <Text style={{ textAlign: 'left' }}>Em Atraso</Text>
             );
         } else if (situacao === 8) {
             return (
@@ -177,9 +177,9 @@ export default class telaProjetos extends Component {
                     }}>FOCO</Text>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
-                            style={{ backgroundColor: 'white', marginBottom: 3 }}>
+                        style={{ backgroundColor: 'white', marginBottom: 3 }}>
 
-                            {item.fimReal === '' ?
+                            {item.fimReal === '' && item.id === 19186 || item.id === 19707 || item.id === 21399 ?
                                 <TouchableOpacity onPress={() => this.mudaTelaResumo(item, item.componentes)}>
 
                                     <Card style={{
@@ -217,12 +217,12 @@ export default class telaProjetos extends Component {
                                                     paddingBottom: 5,
                                                     paddingTop: 8
                                                 }}>
-                                                    <View style={{ paddingRight: wp('2%') }}>
+                                                    {/* <View style={{ paddingRight: wp('2%') }}>
                                                         <Text style={{ fontSize: 12 }}>
                                                             <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
                                                             <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
                                                         </Text>
-                                                    </View>
+                                                    </View> */}
                                                     <View>
                                                         <Text style={{
                                                             color: 'black',
