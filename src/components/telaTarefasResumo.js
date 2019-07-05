@@ -63,15 +63,6 @@ export default class telaTarefasResumo extends Component {
             }).catch(error => {
               console.log('Error: ' + error);
             });
-          axios.post('/v1/registro/listar', { 'tarefa': componente.id }, { headers: { Authorization: 'Bearer ' + tokenPB } }) // 5115
-            .then(response => {
-              this.setState({ registro: response.data.lista })
-              componenteCompleto.push(response.data.lista);
-              this.setState({ comps: componenteCompleto });
-              // this.state.projs = this.state.projetos.concat(this.state.registro);
-            }).catch(error => {
-              console.log('Error: ' + error);
-            });
         })
       }).catch(error => {
         console.log('Error: ' + error);
@@ -79,6 +70,13 @@ export default class telaTarefasResumo extends Component {
   }
 
   async componentDidMount() {
+    let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token');
+    axios.post('/v1/registro/listar', { 'tarefa': this.props.proj.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+      .then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.log('Error: ' + error);
+      });
 
   }
 
@@ -168,7 +166,7 @@ export default class telaTarefasResumo extends Component {
           </Body>
           <Right>
             <View>
-              <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.props.org}.</Text>
+              <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>{this.props.org}.</Text>
               <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.props.user}</Text>
             </View>
 
@@ -180,7 +178,7 @@ export default class telaTarefasResumo extends Component {
             fontWeight: '900',
             color: '#313131',
             backgroundColor: '#f4f4f4',
-            fontSize: 25,
+            fontSize: 20,
             paddingLeft: '3%',
             paddingTop: hp('2%'),
             paddingBottom: hp('2%')
@@ -206,7 +204,7 @@ export default class telaTarefasResumo extends Component {
                         color: 'black',
                         fontWeight: 'normal',
                         fontSize: 14
-                      }}>Projeto: </Text>
+                      }}></Text>
                       <Text style={{
                         color: 'black',
                         fontWeight: 'bold',
@@ -219,7 +217,7 @@ export default class telaTarefasResumo extends Component {
                       flex: 1,
                       flexDirection: 'row',
                       marginBottom: 10,
-                      width: wp('80%'),
+                      width: wp('90%'),
                       paddingBottom: 10,
                       paddingTop: 8
                     }}>
@@ -228,7 +226,7 @@ export default class telaTarefasResumo extends Component {
                           color: 'black',
                           fontSize: 12,
                           paddingRight: wp('10%')
-                        }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{this.props.proj.fimPrevisto}</Text>
+                        }}>fim Previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {this.props.proj.fimPrevisto}</Text>
                         </Text>
                       </View>
 
@@ -254,75 +252,75 @@ export default class telaTarefasResumo extends Component {
                 </Body>
               </CardItem>
             </TouchableOpacity>
+            <View>
               <View>
-                  <View>
-                    {this.state.componentes.map((item, key) => (
-                      <TouchableOpacity key={key} onPress={() => this.proximaTela(item)}>
+                {this.state.componentes.map((item, key) => (
+                  <TouchableOpacity key={key} onPress={() => this.proximaTela(item)}>
+                    <View>
+                      {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
+                      {item.id === 19190 || item.id === 19716 || item.id === 19191 || item.id === 19192 || item.id === 21410 ?
                         <View>
-                          {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
-                          {item.id === 19190 || item.id === 19716 || item.id === 19191 || item.id === 19192 || item.id === 21410 ?
-                            <View>
-                              <CardItem style={{ flex: 1, flexDirection: 'row' }}>
-                                <Body style={{ flex: 1 }}>
-                                  <View>
-                                    <Text style={{ textAlign: 'left' }}>
-                                      <Text style={{ fontWeight: '600', fontSize: 14 }}> {item.nome} </Text>
-                                    </Text>
-                                  </View>
-                                  <View style={{
-                                    flex: 1,
-                                    flexDirection: 'row',
-                                    marginBottom: 10,
-                                    width: wp('80%'),
-                                    paddingBottom: 10,
-                                    paddingTop: 8
+                          <CardItem style={{ flex: 1, flexDirection: 'row' }}>
+                            <Body style={{ flex: 1 }}>
+                              <View>
+                                <Text style={{ textAlign: 'left' }}>
+                                  <Text style={{ fontWeight: '600', fontSize: 14 }}> {item.nome} </Text>
+                                </Text>
+                              </View>
+                              <View style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                marginBottom: 10,
+                                width: wp('90%'),
+                                paddingBottom: 10,
+                                paddingTop: 8
+                              }}>
+                                <View>
+                                  <Text style={{
+                                    color: 'black',
+                                    fontSize: 12,
+                                    paddingRight: wp('10%')
+                                  }}>fim Previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {item.fimPrevisto}</Text>
+                                  </Text>
+                                </View>
+
+
+                                <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                  {this.renderCorSituacao(item.situacao)}
+                                  <Text style={{
+                                    color: 'black',
+                                    fontSize: 12,
+                                    textAlign: 'left',
+                                    paddingLeft: wp('2%')
                                   }}>
-                                    <View>
-                                      <Text style={{
-                                        color: 'black',
-                                        fontSize: 12,
-                                        paddingRight: wp('10%')
-                                      }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
-                                      </Text>
-                                    </View>
+                                    {this.renderSituacao(item.situacao)}
+                                  </Text>
+                                </View>
 
+                                <View>
+                                  <Image style={styles.icoSeta} source={require('../img/ico-seta-esq-abrir.png')} />
+                                </View>
 
-                                    <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
-                                      {this.renderCorSituacao(item.situacao)}
-                                      <Text style={{
-                                        color: 'black',
-                                        fontSize: 12,
-                                        textAlign: 'left',
-                                        paddingLeft: wp('2%')
-                                      }}>
-                                        {this.renderSituacao(item.situacao)}
-                                      </Text>
-                                    </View>
+                              </View>
+                              {/* {this.state.registro.map((reg, keyReg) => ( */}
+                              <View>
+                                {/* {reg.descricao !== '' ? */}
+                                {/* <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text> */}
+                                {/* : <View></View> */}
+                                {/* } */}
+                              </View>
+                              {/* ))} */}
+                            </Body>
+                          </CardItem>
+                        </View> : <View></View>
+                      }
+                    </View>
+                  </TouchableOpacity>
+                ))}
 
-                                    <View>
-                                      <Image style={styles.icoSeta} source={require('../img/ico-seta-esq-fechar-white.png')} />
-                                    </View>
-
-                                  </View>
-                                  {/* {this.state.registro.map((reg, keyReg) => ( */}
-                                  <View>
-                                    {/* {reg.descricao !== '' ? */}
-                                      {/* <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text> */}
-                                      {/* : <View></View> */}
-                                    {/* } */}
-                                  </View>
-                                  {/* ))} */}
-                                </Body>
-                              </CardItem>
-                            </View> : <View></View>
-                          }
-                        </View>
-                      </TouchableOpacity>
-                    ))}
-
-                  </View>
               </View>
-            
+            </View>
+
           </Card>
         </Content>
       </Container>
@@ -337,8 +335,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   logoStyle: {
-    width: wp('35%'),
-    height: hp('40%'),
+    width: wp('30%'),
+    height: hp('35%'),
     resizeMode: 'contain'
   }
 });

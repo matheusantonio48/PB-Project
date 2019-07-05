@@ -33,7 +33,7 @@ export default class telaRegistros extends Component {
     async componentDidMount() {
         let tokenPB = await AsyncStorage.getItem('@ProjectBuilder:token'); //treinamentos em gerenciamentos de projetos
 
-        axios.post('/v1/registro/listar', { "tarefa": this.props.comp.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
+        axios.post('/v1/registro/listar', { "tarefa": this.props.proj.id }, { headers: { Authorization: 'Bearer ' + tokenPB } })
             .then(response => {
                 this.setState({ registros: response.data.lista })
             }).catch(error => {
@@ -90,11 +90,11 @@ export default class telaRegistros extends Component {
                         paddingLeft: '3%',
                         paddingTop: hp('2%'),
                         paddingBottom: hp('2%')
-                    }}>REGISTROS</Text>
+                    }}>REGISTROS DO PROJETO</Text>
                     <View>
 
                         <TouchableOpacity onPress={() => this.telaProjetos()}>
-                            <CardItem style={{ backgroundColor: '#c1c1c1'}}>
+                            <CardItem style={{ backgroundColor: '#dcdcdc' }}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
@@ -110,7 +110,7 @@ export default class telaRegistros extends Component {
 
                                     <Right>
                                         <View>
-                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar.png')} />
+                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar-white.png')} />
                                         </View>
                                     </Right>
 
@@ -118,60 +118,7 @@ export default class telaRegistros extends Component {
                             </CardItem>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => this.telaAnterior()}>
-                            <CardItem style={{ backgroundColor: '#dcdcdc'}}>
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: 'row'
-                                }}>
-                                    <Left>
-                                        <Text style={{
-                                            color: 'black',
-                                            fontWeight: '900',
-                                            fontSize: 14,
-                                            position: 'absolute',
-                                            maxWidth: wp('80%')
-                                        }}>{this.props.comp.nome} - {this.props.proj.nome}</Text>
-                                    </Left>
-
-                                    <Right>
-                                        <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar.png')} />
-                                    </Right>
-
-                                </View>
-                            </CardItem>
-                        </TouchableOpacity>
-
                         <View>
-                            {/* {this.state.envolvimentos.map((item, keyEnv) => (
-                                <View key={keyEnv}>
-                                    {item.idUsuario === 5115 ?
-                                        <View>
-                                            <CardItem style={{ flexDirection: 'row', backgroundColor: '#dcdcdc' }}>
-                                                <Left>
-                                                <Text style={{ fontSize: 12, backgroundColor: '#ffffff', paddingLeft: 10, paddingRight: 10, borderRadius: 100 / 20 }}>
-                                                    <Text style={{ color: '#2768ab', fontWeight: '900' }}>{item.idEnvolvimento} </Text>
-                                                </Text>
-                                                </Left>
-                                                    <Text style={{ textAlign: 'left' }}>
-                                                        <Text style={{ fontWeight: '600', fontSize: 14 }}>{this.props.proj.nome}</Text>
-                                                    </Text>
-                                            </CardItem>
-                                        </View> : <View></View>}
-                                </View>
-
-                            ))} */}
-
-                            {/* <CardItem style={{ flexDirection: 'row', backgroundColor: '#dcdcdc' }}>
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: 'row'
-                                }}>
-                                    <Right>
-                                        <Text style={{ fontSize: 12 }}>fim previsto <Text style={{ fontWeight: '600', fontSize: 12 }}>{this.props.proj.fimPrevisto}</Text></Text>
-                                    </Right>
-                                </View>
-                            </CardItem> */}
 
                             {this.state.registros !== undefined ?
                                 <View>
@@ -181,16 +128,16 @@ export default class telaRegistros extends Component {
                                                 <CardItem style={{
                                                     backgroundColor: '#f4f4f4',
                                                     borderBottomColor: '#c1c1c1',
-                                                    borderBottomWidth: 1.0,
+                                                    borderBottomWidth: 1.0
                                                 }}>
                                                     <View>
-                                                        <Text> <Text style={{ fontSize: 16 }}>Comentário: </Text> <Text> {'\n'} </Text> <Text style={{ fontWeight: '400', fontSize: 12 }}>{item.descricao}</Text></Text>
+                                                        <Text> <Text style={{ fontSize: 16 }}>Comentário: </Text> <Text> {'\n'} </Text> <Text style={{ fontWeight: '400', fontSize: 12, paddingTop: 10 }}>{item.descricao}</Text></Text>
                                                         {/* <Right><Text style={{ fontSize: 12, color: '#a3a3a3' }}>Autor: Luiz Braum</Text></Right> */}
                                                     </View>
                                                     <Right>
                                                         <Text style={{ fontWeight: '400', fontSize: 12 }}>{item.data} </Text>
                                                     </Right>
-                                                </CardItem> : <View></View>
+                                                </CardItem> : <View style={{ display: 'none' }}></View>
                                             }
 
                                         </View>

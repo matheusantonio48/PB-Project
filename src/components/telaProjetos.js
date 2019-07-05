@@ -137,6 +137,13 @@ export default class telaProjetos extends Component {
         });
     }
 
+    mudaTelaRegistroProjeto = (proj, comp) => {
+        Actions.TelaRegistrosProjeto({ proj: proj, comp: comp, org: this.state.organizacao, user: this.state.usuario });
+        const resetAction = StackActions.reset({
+            index: 0,
+        });
+    }
+
     render() {
         return (
             <Container>
@@ -157,7 +164,7 @@ export default class telaProjetos extends Component {
                     </Body>
                     <Right>
                         <View>
-                            <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>Organização {this.state.organizacao}.</Text>
+                            <Text style={{ textAlign: 'right', color: '#6c6c6c', paddingRight: wp('5%'), fontWeight: '900' }}>{this.state.organizacao}.</Text>
                             <Text style={{ textAlign: 'right', paddingRight: wp('5%') }}>{this.state.usuario}</Text>
                         </View>
 
@@ -170,14 +177,14 @@ export default class telaProjetos extends Component {
                         fontWeight: '900',
                         color: '#313131',
                         backgroundColor: '#f4f4f4',
-                        fontSize: 25,
+                        fontSize: 20,
                         paddingLeft: '3%',
                         paddingTop: hp('2%'),
                         paddingBottom: hp('2%')
                     }}>FOCO</Text>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
-                        style={{ backgroundColor: 'white', marginBottom: 3 }}>
+                            style={{ backgroundColor: 'white', marginBottom: 3 }}>
 
                             {item.fimReal === '' && item.id === 19186 || item.id === 19707 || item.id === 21399 ?
                                 <TouchableOpacity onPress={() => this.mudaTelaResumo(item, item.componentes)}>
@@ -200,7 +207,7 @@ export default class telaProjetos extends Component {
                                                         color: 'black',
                                                         fontWeight: 'normal',
                                                         fontSize: 14
-                                                    }}>Projeto: </Text>
+                                                    }}></Text>
                                                     <Text style={{
                                                         color: 'black',
                                                         fontWeight: 'bold',
@@ -213,7 +220,7 @@ export default class telaProjetos extends Component {
                                                     flex: 1,
                                                     flexDirection: 'row',
                                                     marginBottom: 10,
-                                                    width: wp('80%'),
+                                                    width: wp('89%'),
                                                     paddingBottom: 5,
                                                     paddingTop: 8
                                                 }}>
@@ -227,8 +234,8 @@ export default class telaProjetos extends Component {
                                                         <Text style={{
                                                             color: 'black',
                                                             fontSize: 12,
-                                                            paddingRight: wp('5%')
-                                                        }}>Fim Previsto: <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
+                                                            paddingRight: wp('10%')
+                                                        }}>fim Previsto <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
                                                         </Text>
                                                     </View>
 
@@ -245,9 +252,12 @@ export default class telaProjetos extends Component {
                                                         </Text>
                                                     </View>
 
-                                                    <View>
-                                                        <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir-white.png')} />
-                                                    </View>
+                                                    <TouchableOpacity onPress={() => this.mudaTelaRegistroProjeto(item, item.componentes)}>
+                                                        <View style={{ marginLeft: wp('12%')}}>
+                                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir-white.png')} />
+                                                        </View>
+                                                    </TouchableOpacity>
+
 
                                                 </View>
                                                 {/* <View style={{
@@ -262,7 +272,7 @@ export default class telaProjetos extends Component {
                                             </View>
                                         </CardItem>
                                     </Card>
-                                </TouchableOpacity> : <View></View>
+                                </TouchableOpacity> : <View style={{display: 'none'}}></View>
                             }
                         </View>
                     ))}
@@ -310,11 +320,6 @@ const estilo = StyleSheet.create({
         height: hp('10%'),
         resizeMode: 'contain'
     },
-    logoStyle: {
-        width: wp('45%'),
-        height: hp('50%'),
-        resizeMode: 'contain'
-    },
     icoSeta: {
         width: wp('3%'),
         height: hp('3%'),
@@ -326,8 +331,8 @@ const estilo = StyleSheet.create({
         resizeMode: 'contain'
     },
     logoStyle: {
-        width: wp('35%'),
-        height: hp('40%'),
+        width: wp('30%'),
+        height: hp('35%'),
         resizeMode: 'contain'
     },
     footer: {

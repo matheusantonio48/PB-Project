@@ -163,6 +163,7 @@ export default class telaLogin extends Component {
                                     onFocus={() => this.onFocusOrganizacao()}
                                     onBlur={() => this.onBlurOrganizacao()}
                                     onChangeText={this.handleOrganizationChange}
+                                autoCapitalize="none"
                                     placeholder="Organização"
                                     placeholderTextColor="#9d9d9d" />
                             </Item>
@@ -187,6 +188,7 @@ export default class telaLogin extends Component {
                                     onFocus={() => this.onFocusIdentificacao()}
                                     onBlur={() => this.onBlurIdentificacao()}
                                     onChangeText={this.handleLoginChange}
+                                    autoCapitalize="none"
                                     placeholder="Identificação"
                                     placeholderTextColor="#9d9d9d" />
 
@@ -213,6 +215,7 @@ export default class telaLogin extends Component {
                                     onFocus={() => this.onFocusSenha()}
                                     onBlur={() => this.onBlurSenha()}
                                     onChangeText={this.handlePasswordChange}
+                                autoCapitalize="none"
                                     placeholder="Senha"
                                     placeholderTextColor="#9d9d9d" />
                             </Item>
