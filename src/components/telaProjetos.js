@@ -184,7 +184,7 @@ export default class telaProjetos extends Component {
                     }}>FOCO</Text>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
-                            style={{ backgroundColor: 'white', marginBottom: 3 }}>
+                            style={{ backgroundColor: 'white' }}>
 
                             {item.fimReal === '' && item.id === 19186 || item.id === 19707 || item.id === 21399 ?
                                 <TouchableOpacity onPress={() => this.mudaTelaResumo(item, item.componentes)}>
@@ -254,7 +254,7 @@ export default class telaProjetos extends Component {
 
                                                     <TouchableOpacity onPress={() => this.mudaTelaRegistroProjeto(item, item.componentes)}>
                                                         <View style={{ marginLeft: wp('12%')}}>
-                                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir-white.png')} />
+                                                            <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
                                                         </View>
                                                     </TouchableOpacity>
 

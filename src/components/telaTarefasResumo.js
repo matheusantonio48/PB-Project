@@ -244,7 +244,7 @@ export default class telaTarefasResumo extends Component {
                       </View>
 
                       <View>
-                        <Image style={styles.icoSeta} source={require('../img/ico-seta-esq-fechar-white.png')} />
+                        <Image style={styles.icoSeta} source={require('../img/seta-voltar-preta.png')} />
                       </View>
 
                     </View>
@@ -298,7 +298,7 @@ export default class telaTarefasResumo extends Component {
                                 </View>
 
                                 <View>
-                                  <Image style={styles.icoSeta} source={require('../img/ico-seta-esq-abrir.png')} />
+                                  <Image style={styles.icoSeta} source={require('../img/seta-avancar-preta.png')} />
                                 </View>
 
                               </View>

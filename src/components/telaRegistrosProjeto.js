@@ -110,7 +110,7 @@ export default class telaRegistros extends Component {
 
                                     <Right>
                                         <View>
-                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar-white.png')} />
+                                            <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
                                         </View>
                                     </Right>
 

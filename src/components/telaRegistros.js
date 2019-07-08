@@ -110,7 +110,7 @@ export default class telaRegistros extends Component {
 
                                     <Right>
                                         <View>
-                                            <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar.png')} />
+                                            <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
                                         </View>
                                     </Right>
 
@@ -119,7 +119,7 @@ export default class telaRegistros extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => this.telaAnterior()}>
-                            <CardItem style={{ backgroundColor: '#dcdcdc'}}>
+                            <CardItem style={{ backgroundColor: '#f4f4f4', marginBottom: hp('5%')}}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
@@ -135,7 +135,7 @@ export default class telaRegistros extends Component {
                                     </Left>
 
                                     <Right>
-                                        <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-fechar.png')} />
+                                        <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
                                     </Right>
 
                                 </View>
