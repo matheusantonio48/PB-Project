@@ -17,6 +17,15 @@ import {
 
 export default class splash extends Component {
 
+  async componentDidMount() {
+    let PBToken = await AsyncStorage.getItem('@ProjectBuilder:token');
+    if (PBToken != null ){
+        Actions.TelaLogin();
+    } else {
+        Actions.TelaLogin();
+    }}
+
+
   render() {
     return (
       <View style={styles.principal}>

@@ -12,6 +12,10 @@ export default props => (
 
     <Scene key="root">
 
+      <Scene key="Splash"
+        component={Splash}
+        hideNavBar={true} />
+
       <Scene key="TelaLogin"
         component={TelaLogin}
         hideNavBar={true} />
@@ -30,10 +34,6 @@ export default props => (
 
       <Scene key="TelaRegistrosProjeto"
         component={TelaRegistrosProjeto}
-        hideNavBar={true} />
-
-      <Scene key="Splash"
-        component={Splash}
         hideNavBar={true} />
 
     </Scene>
