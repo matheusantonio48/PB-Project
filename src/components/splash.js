@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 import {
