@@ -9,6 +9,7 @@ import {
   StyleSheet,
   View,
   Image,
+  ImageBackground
 
 
 } from 'react-native';
@@ -19,20 +20,23 @@ export default class splash extends Component {
 
   async componentDidMount() {
     let PBToken = await AsyncStorage.getItem('@ProjectBuilder:token');
-    if (PBToken != null ){
+    setTimeout(function(){
+      if (PBToken != null ){
         Actions.TelaLogin();
-    } else {
-        Actions.TelaLogin();
-    }}
+      } else {
+          Actions.TelaLogin();
+      }
+    }, 2500);
+ 
+ 
+
+   }
 
 
   render() {
     return (
-      <View style={styles.principal}>
-        <View style={styles.splashLogo}>
-          <Image style={styles.logoStyle} source={require('../img/logo-e-titulo-splash-pb.png')} />
-        </View>
-      </View>
+      <ImageBackground source={require("../img/Layout-APP-PB-tela-01.png")} style={styles.principal}>
+      </ImageBackground>
 
     );
   }
@@ -40,24 +44,9 @@ export default class splash extends Component {
 
 const styles = StyleSheet.create({
   principal: {
-    flex: 1
-  },
-
-  splashLogo: {
-    flex: 1,
     width: wp('100%'),
     height: hp('100%'),
-    justifyContent: 'center',
-    alignItems: 'center'
+    flex: 1
   },
-
-  logoStyle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: wp('90%'),
-    height: hp('40%'),
-    resizeMode: 'contain'
-
-  }
 
 });
