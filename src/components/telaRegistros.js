@@ -45,6 +45,63 @@ export default class telaRegistros extends Component {
                 this.setState({ envolvimentos: response.data.lista });
                 console.log(response);
             })
+
+    }
+
+    renderCorSituacao = (situacao) => {
+        if (situacao === 3) {
+            return (
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+            );
+        } else if (situacao === 4) {
+            return (
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+            );
+        } else if (situacao === 7) {
+            return (
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+            );
+        } else if (situacao === 8) {
+            return (
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#36d925' }}></View>
+            );
+        } else if (situacao === 9) {
+            return (
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+            );
+        } else {
+            return (
+                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#000000' }}></View>
+            );
+        }
+    }
+
+    renderSituacao = (situacao) => {
+        if (situacao === 3) {
+            return (
+                <Text style={{ textAlign: 'left' }}>Em andamento</Text>
+            );
+        } else if (situacao === 4) {
+            return (
+                <Text style={{ textAlign: 'left' }}>Concluído</Text>
+            );
+        } else if (situacao === 7) {
+            return (
+                <Text style={{ textAlign: 'left' }}>Em atraso</Text>
+            );
+        } else if (situacao === 8) {
+            return (
+                <Text style={{ textAlign: 'left' }}>Pode iniciar</Text>
+            );
+        } else if (situacao === 9) {
+            return (
+                <Text style={{ textAlign: 'left' }}>Parado</Text>
+            );
+        } else {
+            return (
+                <Text style={{ textAlign: 'left' }}>Desconhecida</Text>
+            );
+        }
     }
 
     telaAnterior = () => {
@@ -94,7 +151,7 @@ export default class telaRegistros extends Component {
                     <View>
 
                         <TouchableOpacity onPress={() => this.telaProjetos()}>
-                            <CardItem style={{ backgroundColor: '#c1c1c1' }}>
+                            <CardItem style={{ backgroundColor: '#c1c1c1', minHeight: 50 }}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
@@ -108,36 +165,34 @@ export default class telaRegistros extends Component {
                                         }}>{this.props.proj.nome}</Text>
                                     </Left>
 
-                                    <Right>
+                                    {/* <Right>
                                         <View>
                                             <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
                                         </View>
-                                    </Right>
+                                    </Right> */}
 
                                 </View>
                             </CardItem>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => this.telaAnterior()}>
-                            <CardItem style={{ backgroundColor: '#f4f4f4' }}>
+                            <CardItem style={{ backgroundColor: '#f4f4f4', minHeight: 50 }}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
                                 }}>
                                     <Left>
+                                        <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
+                                    </Left>
+
+                                    <View>
                                         <Text style={{
                                             color: 'black',
                                             fontWeight: '900',
                                             fontSize: 14,
-                                            position: 'absolute',
                                             maxWidth: wp('80%')
                                         }}>{this.props.comp.nome} - {this.props.proj.nome}</Text>
-                                    </Left>
-
-                                    <Right>
-                                        <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
-                                    </Right>
-
+                                    </View>
                                 </View>
                             </CardItem>
                             <CardItem>
@@ -153,6 +208,19 @@ export default class telaRegistros extends Component {
                                         }}>Fim previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {this.props.comp.fimPrevisto}</Text>
                                         </Text>
                                     </Left>
+                                    <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                        <View>
+                                            {this.renderCorSituacao(this.props.comp.situacao)}
+                                        </View>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontSize: 12,
+                                            textAlign: 'left',
+                                            paddingLeft: wp('2%')
+                                        }}>
+                                            {this.renderSituacao(this.props.comp.situacao)}
+                                        </Text>
+                                    </View>
                                 </View>
                             </CardItem>
                         </TouchableOpacity>

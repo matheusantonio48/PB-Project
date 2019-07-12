@@ -106,7 +106,7 @@ export default class telaProjetos extends Component {
     renderSituacao = (situacao) => {
         if (situacao === 3) {
             return (
-                <Text style={{ textAlign: 'left' }}>Em Andamento</Text>
+                <Text style={{ textAlign: 'left' }}>Em andamento</Text>
             );
         } else if (situacao === 4) {
             return (
@@ -114,7 +114,7 @@ export default class telaProjetos extends Component {
             );
         } else if (situacao === 7) {
             return (
-                <Text style={{ textAlign: 'left' }}>Em Atraso</Text>
+                <Text style={{ textAlign: 'left' }}>Em atraso</Text>
             );
         } else if (situacao === 8) {
             return (
@@ -188,163 +188,157 @@ export default class telaProjetos extends Component {
                             style={{ backgroundColor: 'white' }}>
 
                             {item.fimReal === '' && item.id === 19186 || item.id === 19707 || item.id === 21399 ?
-                                <TouchableOpacity>
+                                <View style={{ backgroundColor: '#dcdcdc' }}>
+                                    <TouchableOpacity onPress={() => this.mudaTelaRegistroProjeto(item, item.componentes)}>
+                                        <View style={{ paddingLeft: 15 }}>
+                                            <View style={{
+                                                flex: 1,
+                                                backgroundColor: '#dcdcdc',
+                                                flexDirection: 'row',
+                                                maxWidth: '90%'
+                                            }}>
+                                                <Text style={{
+                                                    color: 'black',
+                                                    fontWeight: 'normal',
+                                                    fontSize: 14
+                                                }}></Text>
+                                                <Text style={{
+                                                    color: 'black',
+                                                    fontWeight: 'bold',
+                                                    fontSize: 14
+                                                }}>{item.nome}
+                                                </Text>
+                                            </View>
 
-                                    <Collapse style={{
-                                        paddingTop: 5,
-                                        width: wp('100%')
-                                    }}>
-                                        <CollapseHeader style={{ backgroundColor: '#dcdcdc', paddingLeft: '3%' }}>
-                                            <View>
-                                                <View style={{
-                                                    flex: 1,
-                                                    flexDirection: 'row',
-                                                    maxWidth: '90%'
-                                                }}>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                marginBottom: 10,
+                                                width: wp('89%'),
+                                                paddingBottom: 5,
+                                                paddingTop: 8
+                                            }}>
+                                                {/* <View style={{ paddingRight: wp('2%') }}>
+                                                            <Text style={{ fontSize: 12 }}>
+                                                                <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
+                                                                <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
+                                                            </Text>
+                                                        </View> */}
+                                                <View>
                                                     <Text style={{
                                                         color: 'black',
-                                                        fontWeight: 'normal',
-                                                        fontSize: 14
-                                                    }}></Text>
-                                                    <Text style={{
-                                                        color: 'black',
-                                                        fontWeight: 'bold',
-                                                        fontSize: 14
-                                                    }}>{item.nome}
+                                                        fontSize: 12,
+                                                        paddingRight: wp('10%')
+                                                    }}>Fim previsto <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
                                                     </Text>
                                                 </View>
 
-                                                <View style={{
-                                                    flex: 1,
-                                                    flexDirection: 'row',
-                                                    marginBottom: 10,
-                                                    width: wp('89%'),
-                                                    paddingBottom: 5,
-                                                    paddingTop: 8
-                                                }}>
-                                                    {/* <View style={{ paddingRight: wp('2%') }}>
-                                                        <Text style={{ fontSize: 12 }}>
-                                                            <Text style={{ color: '#2768ab', fontWeight: '900' }}>EQ </Text>
-                                                            <Text style={{ fontSize: 12 }}>[ p3 ]</Text>
-                                                        </Text>
-                                                    </View> */}
-                                                    <View>
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: 12,
-                                                            paddingRight: wp('10%')
-                                                        }}>Fim previsto <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
-                                                        </Text>
-                                                    </View>
 
-
-                                                    <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
-                                                        {this.renderCorSituacao(item.situacao)}
-                                                        <Text style={{
-                                                            color: 'black',
-                                                            fontSize: 12,
-                                                            textAlign: 'left',
-                                                            paddingLeft: wp('2%')
-                                                        }}>
-                                                            {this.renderSituacao(item.situacao)}
-                                                        </Text>
-                                                    </View>
-
-                                                    <TouchableOpacity onPress={() => this.mudaTelaRegistroProjeto(item, item.componentes)}>
-                                                        <View style={{ marginLeft: wp('12%') }}>
-                                                            <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
-                                                        </View>
-                                                    </TouchableOpacity>
-
-
+                                                <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                                    {this.renderCorSituacao(item.situacao)}
+                                                    <Text style={{
+                                                        color: 'black',
+                                                        fontSize: 12,
+                                                        textAlign: 'left',
+                                                        paddingLeft: wp('2%')
+                                                    }}>
+                                                        {this.renderSituacao(item.situacao)}
+                                                    </Text>
                                                 </View>
-                                                {/* <View style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                            justifyContent: 'flex-end',
-                                            paddingEnd: 20,
-                                            marginBottom: 10
-                                        }}>
-                                            <Thumbnail style={{ width: 25, height: 25 }} source={require('../img/ico-abrir-box.png')} />
-                                        </View> */}
-                                                <Image style={estilo.icoSeta} source={require('../img/seta-fechar-atividades.png')} />
+
+                                                <View style={{ marginLeft: wp('12%') }}>
+                                                    <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
+                                                </View>
                                             </View>
-                                        </CollapseHeader>
+                                        </View>
 
-                                        <CollapseBody style={{
-                                            flex: 1,
-                                            flexDirection: 'column',
-                                            justifyContent: 'flex-start',
-                                            paddingLeft: 5
+                                        <Collapse style={{
+                                            paddingTop: 5,
+                                            width: wp('100%')
                                         }}>
-                                            {item.componentes.map((comp, key) => (
-                                                <View key={key}>
-                                                    {comp.id === 19190 || comp.id === 19716 || comp.id === 19191 || comp.id === 19192 || comp.id === 21410 ?
-                                                        <TouchableOpacity onPress={() => this.proximaTela(item, comp)}>
-                                                            <View style={{
-                                                                borderBottomColor: '#c1c1c1',
-                                                                borderBottomWidth: 1.0
-                                                            }}>
-                                                                {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
-                                                                <View>
-                                                                    <View>
-                                                                        <Text style={{ textAlign: 'left' }}>
-                                                                            <Text style={{ fontWeight: '600', fontSize: 14 }}> {comp.nome} </Text>
-                                                                        </Text>
-                                                                    </View>
-                                                                    <View style={{
-                                                                        flex: 1,
-                                                                        flexDirection: 'row',
-                                                                        marginBottom: 10,
-                                                                        width: wp('90%'),
-                                                                        paddingBottom: 10,
-                                                                        paddingTop: 8
-                                                                    }}>
-                                                                        <View>
-                                                                            <Text style={{
-                                                                                color: 'black',
-                                                                                fontSize: 12,
-                                                                                paddingRight: wp('10%')
-                                                                            }}>Fim previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {comp.fimPrevisto}</Text>
-                                                                            </Text>
-                                                                        </View>
-
-
-                                                                        <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
-                                                                            {this.renderCorSituacao(comp.situacao)}
-                                                                            <Text style={{
-                                                                                color: 'black',
-                                                                                fontSize: 12,
-                                                                                textAlign: 'left',
-                                                                                paddingLeft: wp('2%')
-                                                                            }}>
-                                                                                {this.renderSituacao(comp.situacao)}
-                                                                            </Text>
-                                                                        </View>
-
-                                                                        <View>
-                                                                            <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
-                                                                        </View>
-
-                                                                    </View>
-                                                                    {/* {this.state.registro.map((reg, keyReg) => ( */}
-                                                                    <View>
-                                                                        {/* {reg.descricao !== '' ? */}
-                                                                        {/* <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text> */}
-                                                                        {/* : <View></View> */}
-                                                                        {/* } */}
-                                                                    </View>
-                                                                    {/* ))} */}
-                                                                </View>
-                                                            </View>
-                                                        </TouchableOpacity> : <View></View>}
-
+                                            <CollapseHeader style={{ paddingLeft: '3%' }}>
+                                                <View>
+                                                    <View style={{ flex: 1, alignItems: 'center' }}>
+                                                        <Image style={{ width: wp('20%'), height: hp('2%') }} source={require('../img/seta-abrir-atividades.png')} />
+                                                    </View>
                                                 </View>
-                                            ))}
-                                        </CollapseBody>
+                                            </CollapseHeader>
 
-                                    </Collapse>
-                                </TouchableOpacity> : <View style={{ display: 'none' }}></View>
+                                            <CollapseBody style={{
+                                                flex: 1,
+                                                flexDirection: 'column',
+                                                justifyContent: 'flex-start',
+                                                backgroundColor: '#FFF',
+                                                paddingLeft: 15
+                                            }}>
+                                                {item.componentes.map((comp, key) => (
+                                                    <View key={key}>
+                                                        {comp.id === 19190 || comp.id === 19716 || comp.id === 19191 || comp.id === 19192 || comp.id === 21410 ?
+                                                            <TouchableOpacity onPress={() => this.proximaTela(item, comp)}>
+                                                                <View style={{
+                                                                    borderBottomColor: '#c1c1c1',
+                                                                    borderBottomWidth: 1.0
+                                                                }}>
+                                                                    {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
+                                                                    <View>
+                                                                        <View>
+                                                                            <Text style={{ fontWeight: '600', fontSize: 14 }}> {comp.nome} </Text>
+                                                                        </View>
+                                                                        <View style={{
+                                                                            flex: 1,
+                                                                            flexDirection: 'row',
+                                                                            marginBottom: 10,
+                                                                            width: wp('90%'),
+                                                                            paddingBottom: 10,
+                                                                            paddingTop: 8
+                                                                        }}>
+                                                                            <View>
+                                                                                <Text style={{
+                                                                                    color: 'black',
+                                                                                    fontSize: 12,
+                                                                                    paddingRight: wp('10%')
+                                                                                }}>Fim previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {comp.fimPrevisto}</Text>
+                                                                                </Text>
+                                                                            </View>
+
+
+                                                                            <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                                                                {this.renderCorSituacao(comp.situacao)}
+                                                                                <Text style={{
+                                                                                    color: 'black',
+                                                                                    fontSize: 12,
+                                                                                    textAlign: 'left',
+                                                                                    paddingLeft: wp('2%')
+                                                                                }}>
+                                                                                    {this.renderSituacao(comp.situacao)}
+                                                                                </Text>
+                                                                            </View>
+
+                                                                            <View>
+                                                                                <Image style={estilo.icoSeta} source={require('../img/ico-seta-esq-abrir.png')} />
+                                                                            </View>
+
+                                                                        </View>
+                                                                        {/* {this.state.registro.map((reg, keyReg) => ( */}
+                                                                        <View>
+                                                                            {/* {reg.descricao !== '' ? */}
+                                                                            {/* <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text> */}
+                                                                            {/* : <View></View> */}
+                                                                            {/* } */}
+                                                                        </View>
+                                                                        {/* ))} */}
+                                                                    </View>
+                                                                </View>
+                                                            </TouchableOpacity> : <View></View>}
+
+                                                    </View>
+                                                ))}
+                                            </CollapseBody>
+
+                                        </Collapse>
+                                    </TouchableOpacity>
+
+                                </View> : <View style={{ display: 'none' }}></View>
                             }
                         </View>
                     ))}
