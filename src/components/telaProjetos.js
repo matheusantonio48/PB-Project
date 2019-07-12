@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AsyncStorage from '@react-native-community/async-storage';
+import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { Content, Card, CardItem, Footer, FooterTab, Container, Header, Left, Right, Body, Button, Icon, Thumbnail, Accordion, Title, Item, Toast } from "native-base";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -130,8 +131,8 @@ export default class telaProjetos extends Component {
         }
     }
 
-    mudaTelaResumo = (proj, comp) => {
-        Actions.TelaTarefasResumo({ proj: proj, comp: comp, org: this.state.organizacao, user: this.state.usuario });
+    proximaTela(proj, comp) {
+        Actions.TelaRegistros({ proj: proj, comp: comp, org: this.state.organizacao, user: this.state.usuario });
         const resetAction = StackActions.reset({
             index: 0,
         });
@@ -187,16 +188,13 @@ export default class telaProjetos extends Component {
                             style={{ backgroundColor: 'white' }}>
 
                             {item.fimReal === '' && item.id === 19186 || item.id === 19707 || item.id === 21399 ?
-                                <TouchableOpacity onPress={() => this.mudaTelaResumo(item, item.componentes)}>
+                                <TouchableOpacity>
 
-                                    <Card style={{
-                                        backgroundColor: '#dcdcdc',
-                                        paddingRight: '8%',
-                                        paddingLeft: '1%',
+                                    <Collapse style={{
                                         paddingTop: 5,
                                         width: wp('100%')
                                     }}>
-                                        <CardItem style={{ backgroundColor: '#dcdcdc' }}>
+                                        <CollapseHeader style={{ backgroundColor: '#dcdcdc', paddingLeft: '3%' }}>
                                             <View>
                                                 <View style={{
                                                     flex: 1,
@@ -235,7 +233,7 @@ export default class telaProjetos extends Component {
                                                             color: 'black',
                                                             fontSize: 12,
                                                             paddingRight: wp('10%')
-                                                        }}>fim Previsto <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
+                                                        }}>Fim previsto <Text style={{ fontWeight: '900' }}>{item.fimPrevisto}</Text>
                                                         </Text>
                                                     </View>
 
@@ -253,7 +251,7 @@ export default class telaProjetos extends Component {
                                                     </View>
 
                                                     <TouchableOpacity onPress={() => this.mudaTelaRegistroProjeto(item, item.componentes)}>
-                                                        <View style={{ marginLeft: wp('12%')}}>
+                                                        <View style={{ marginLeft: wp('12%') }}>
                                                             <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
                                                         </View>
                                                     </TouchableOpacity>
@@ -269,10 +267,84 @@ export default class telaProjetos extends Component {
                                         }}>
                                             <Thumbnail style={{ width: 25, height: 25 }} source={require('../img/ico-abrir-box.png')} />
                                         </View> */}
+                                                <Image style={estilo.icoSeta} source={require('../img/seta-fechar-atividades.png')} />
                                             </View>
-                                        </CardItem>
-                                    </Card>
-                                </TouchableOpacity> : <View style={{display: 'none'}}></View>
+                                        </CollapseHeader>
+
+                                        <CollapseBody style={{
+                                            flex: 1,
+                                            flexDirection: 'column',
+                                            justifyContent: 'flex-start',
+                                            paddingLeft: 5
+                                        }}>
+                                            {item.componentes.map((comp, key) => (
+                                                <View key={key}>
+                                                    {comp.id === 19190 || comp.id === 19716 || comp.id === 19191 || comp.id === 19192 || comp.id === 21410 ?
+                                                        <TouchableOpacity onPress={() => this.proximaTela(item, comp)}>
+                                                            <View style={{
+                                                                borderBottomColor: '#c1c1c1',
+                                                                borderBottomWidth: 1.0
+                                                            }}>
+                                                                {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
+                                                                <View>
+                                                                    <View>
+                                                                        <Text style={{ textAlign: 'left' }}>
+                                                                            <Text style={{ fontWeight: '600', fontSize: 14 }}> {comp.nome} </Text>
+                                                                        </Text>
+                                                                    </View>
+                                                                    <View style={{
+                                                                        flex: 1,
+                                                                        flexDirection: 'row',
+                                                                        marginBottom: 10,
+                                                                        width: wp('90%'),
+                                                                        paddingBottom: 10,
+                                                                        paddingTop: 8
+                                                                    }}>
+                                                                        <View>
+                                                                            <Text style={{
+                                                                                color: 'black',
+                                                                                fontSize: 12,
+                                                                                paddingRight: wp('10%')
+                                                                            }}>Fim previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {comp.fimPrevisto}</Text>
+                                                                            </Text>
+                                                                        </View>
+
+
+                                                                        <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
+                                                                            {this.renderCorSituacao(comp.situacao)}
+                                                                            <Text style={{
+                                                                                color: 'black',
+                                                                                fontSize: 12,
+                                                                                textAlign: 'left',
+                                                                                paddingLeft: wp('2%')
+                                                                            }}>
+                                                                                {this.renderSituacao(comp.situacao)}
+                                                                            </Text>
+                                                                        </View>
+
+                                                                        <View>
+                                                                            <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
+                                                                        </View>
+
+                                                                    </View>
+                                                                    {/* {this.state.registro.map((reg, keyReg) => ( */}
+                                                                    <View>
+                                                                        {/* {reg.descricao !== '' ? */}
+                                                                        {/* <Text style={{ fontSize: 12 }}> <Text style={{ fontWeight: '600' }}>Comentário: </Text>Teste</Text> */}
+                                                                        {/* : <View></View> */}
+                                                                        {/* } */}
+                                                                    </View>
+                                                                    {/* ))} */}
+                                                                </View>
+                                                            </View>
+                                                        </TouchableOpacity> : <View></View>}
+
+                                                </View>
+                                            ))}
+                                        </CollapseBody>
+
+                                    </Collapse>
+                                </TouchableOpacity> : <View style={{ display: 'none' }}></View>
                             }
                         </View>
                     ))}

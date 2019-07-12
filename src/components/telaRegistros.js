@@ -94,7 +94,7 @@ export default class telaRegistros extends Component {
                     <View>
 
                         <TouchableOpacity onPress={() => this.telaProjetos()}>
-                            <CardItem style={{ backgroundColor: '#c1c1c1'}}>
+                            <CardItem style={{ backgroundColor: '#c1c1c1' }}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
@@ -119,7 +119,7 @@ export default class telaRegistros extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => this.telaAnterior()}>
-                            <CardItem style={{ backgroundColor: '#f4f4f4', marginBottom: hp('5%')}}>
+                            <CardItem style={{ backgroundColor: '#f4f4f4' }}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
@@ -138,6 +138,21 @@ export default class telaRegistros extends Component {
                                         <Image style={estilo.icoSeta} source={require('../img/seta-voltar-preta.png')} />
                                     </Right>
 
+                                </View>
+                            </CardItem>
+                            <CardItem>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row'
+                                }}>
+                                    <Left>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontSize: 12,
+                                            paddingRight: wp('10%')
+                                        }}>Fim previsto <Text style={{ fontWeight: '900', fontSize: 12 }}> {this.props.comp.fimPrevisto}</Text>
+                                        </Text>
+                                    </Left>
                                 </View>
                             </CardItem>
                         </TouchableOpacity>
@@ -190,13 +205,13 @@ export default class telaRegistros extends Component {
                                                     <Right>
                                                         <Text style={{ fontWeight: '400', fontSize: 12 }}>{item.data} </Text>
                                                     </Right>
-                                                </CardItem> : <View></View>
+                                                </CardItem> : <View style={{ display: 'none', width: 0, height: 0 }}></View>
                                             }
 
                                         </View>
 
                                     ))}
-                                </View> : <View></View>
+                                </View> : <View style={{ display: 'none', width: 0, height: 0 }}></View>
                             }
                         </View>
                     </View>
