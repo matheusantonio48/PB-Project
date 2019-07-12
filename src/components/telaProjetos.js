@@ -36,6 +36,7 @@ export default class telaProjetos extends Component {
 
         this.state = {
             projetos: [],
+            collapsed: false,
             componentes: [],
             isLoading: false,
             nome: null,
@@ -246,22 +247,31 @@ export default class telaProjetos extends Component {
                                                     </Text>
                                                 </View>
 
-                                                <View style={{ marginLeft: wp('12%') }}>
-                                                    <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
-                                                </View>
+                                                {this.state.collapsed != true ?
+                                                    <View style={{ marginLeft: wp('12%') }}>
+                                                        <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
+                                                    </View>
+                                                    :
+                                                    <View></View>
+                                                }
+
                                             </View>
                                         </View>
 
-                                        <Collapse style={{
+                                        <Collapse isCollapsed={this.state.collapsed} style={{
                                             paddingTop: 5,
                                             width: wp('100%')
                                         }}>
                                             <CollapseHeader style={{ paddingLeft: '3%' }}>
-                                                <View>
+                                                {this.state.collapsed != true ?
                                                     <View style={{ flex: 1, alignItems: 'center' }}>
                                                         <Image style={{ width: wp('20%'), height: hp('2%') }} source={require('../img/seta-abrir-atividades.png')} />
                                                     </View>
-                                                </View>
+                                                    :
+                                                    <View style={{ flex: 1, alignItems: 'center' }}>
+                                                        <Image style={{ width: wp('20%'), height: hp('2%') }} source={require('../img/seta-fechar-atividades.png')} />
+                                                    </View>
+                                                }
                                             </CollapseHeader>
 
                                             <CollapseBody style={{
@@ -271,6 +281,7 @@ export default class telaProjetos extends Component {
                                                 backgroundColor: '#FFF',
                                                 paddingLeft: 15
                                             }}>
+
                                                 {item.componentes.map((comp, key) => (
                                                     <View key={key}>
                                                         {comp.id === 19190 || comp.id === 19716 || comp.id === 19191 || comp.id === 19192 || comp.id === 21410 ?
