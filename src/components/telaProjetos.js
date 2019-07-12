@@ -277,7 +277,7 @@ export default class telaProjetos extends Component {
                                                             <TouchableOpacity onPress={() => this.proximaTela(item, comp)}>
                                                                 <View style={{
                                                                     borderBottomColor: '#c1c1c1',
-                                                                    borderBottomWidth: 1.0
+                                                                    borderBottomWidth: 0.5
                                                                 }}>
                                                                     {/* {item.fimReal === '' || (item.inicioReal !== '' && item.inicioPrevisto !== '') ? */}
                                                                     <View>
