@@ -18,6 +18,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     Text
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
@@ -39,6 +40,7 @@ export default class telaProjetos extends Component {
             collapsed: false,
             componentes: [],
             isLoading: false,
+            displayIcon: false,
             nome: null,
             organizacao: this.props.organizacao,
             usuario: this.props.login
@@ -79,27 +81,27 @@ export default class telaProjetos extends Component {
     renderCorSituacao = (situacao) => {
         if (situacao === 3) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
             );
         } else if (situacao === 4) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#0000FF' }}></View>
             );
         } else if (situacao === 7) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
             );
         } else if (situacao === 8) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#36d925' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
             );
         } else if (situacao === 9) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
             );
         } else {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#000000' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#000000' }}></View>
             );
         }
     }
@@ -186,7 +188,7 @@ export default class telaProjetos extends Component {
                     }}>FOCO</Text>
                     {this.state.projetos.map((item, key) => (
                         <View key={key}
-                            style={{ backgroundColor: 'white' }}>
+                            style={{ backgroundColor: 'white', marginBottom: 0.5 }}>
 
                             {item.fimReal === '' && item.id === 19186 || item.id === 19707 || item.id === 21399 ?
                                 <View style={{ backgroundColor: '#dcdcdc' }}>
@@ -247,7 +249,7 @@ export default class telaProjetos extends Component {
                                                     </Text>
                                                 </View>
 
-                                                {this.state.collapsed != true ?
+                                                {this.state.displayIcon !== true ?
                                                     <View style={{ marginLeft: wp('12%') }}>
                                                         <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
                                                     </View>
@@ -258,18 +260,19 @@ export default class telaProjetos extends Component {
                                             </View>
                                         </View>
 
-                                        <Collapse isCollapsed={this.state.collapsed} style={{
-                                            paddingTop: 5,
-                                            width: wp('100%')
-                                        }}>
+                                        <Collapse isCollapsed={this.state.collapsed}
+                                            onToggle={(isCollapsed) => this.setState({ displayIcon: isCollapsed })} style={{
+                                                paddingTop: 5,
+                                                width: wp('100%')
+                                            }}>
                                             <CollapseHeader style={{ paddingLeft: '3%' }}>
-                                                {this.state.collapsed != true ?
+                                                {this.state.displayIcon !== true ?
                                                     <View style={{ flex: 1, alignItems: 'center' }}>
-                                                        <Image style={{ width: wp('20%'), height: hp('2%') }} source={require('../img/seta-abrir-atividades.png')} />
+                                                        <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={require('../img/seta-abrir-atividades.png')} />
                                                     </View>
                                                     :
                                                     <View style={{ flex: 1, alignItems: 'center' }}>
-                                                        <Image style={{ width: wp('20%'), height: hp('2%') }} source={require('../img/seta-fechar-atividades.png')} />
+                                                        <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={require('../img/seta-fechar-atividades.png')} />
                                                     </View>
                                                 }
                                             </CollapseHeader>

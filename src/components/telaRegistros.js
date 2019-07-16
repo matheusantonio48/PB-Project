@@ -51,27 +51,27 @@ export default class telaRegistros extends Component {
     renderCorSituacao = (situacao) => {
         if (situacao === 3) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FFFF00' }}></View>
             );
         } else if (situacao === 4) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#0000FF' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#0000FF' }}></View>
             );
         } else if (situacao === 7) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#FF0000' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
             );
         } else if (situacao === 8) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#36d925' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
             );
         } else if (situacao === 9) {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#9A62DF' }}></View>
             );
         } else {
             return (
-                <View style={{ width: 10, height: 10, borderRadius: 100 / 2, marginTop: 5, backgroundColor: '#000000' }}></View>
+                <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#000000' }}></View>
             );
         }
     }
