@@ -274,7 +274,7 @@ export default class telaProjetos extends Component {
                                             </View>
                                         </View>
 
-                                        <Collapse onToggle={() => this.displayIcon(item.id)} style={{
+                                        <Collapse style={{
                                                 paddingTop: 5,
                                                 width: wp('100%')
                                             }}>
