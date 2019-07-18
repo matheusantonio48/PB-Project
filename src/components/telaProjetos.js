@@ -262,7 +262,7 @@ export default class telaProjetos extends Component {
                                                     </Text>
                                                 </View>
 
-                                                {this.state.projeto1 !== true
+                                                {this.state.displayIcon !== true
                                                 ?
                                                 <View>
                                                     <View style={{ marginLeft: wp('12%') }}>
@@ -274,13 +274,12 @@ export default class telaProjetos extends Component {
                                             </View>
                                         </View>
 
-                                        <Collapse isCollapsed={this.state.collapsed}
-                                            onToggle={() => this.displayIcon(item.id)} style={{
+                                        <Collapse onToggle={() => this.displayIcon(item.id)} style={{
                                                 paddingTop: 5,
                                                 width: wp('100%')
                                             }}>
                                             <CollapseHeader style={{ paddingLeft: '3%' }}>
-                                                {this.state.projeto1 !== true ?
+                                                {this.state.displayIcon !== true ?
                                                     <View style={{ flex: 1, alignItems: 'center' }}>
                                                         <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={require('../img/seta-abrir-atividades.png')} />
                                                     </View>
