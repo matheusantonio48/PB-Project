@@ -61,7 +61,9 @@ export default class telaRegistros extends Component {
             return (
                 <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#FF0000' }}></View>
             );
-        } else if (situacao === 8) {
+        } else if (situacao === 8) {renders
+
+            
             return (
                 <View style={{ width: 10, height: 10, marginTop: 5, backgroundColor: '#36d925' }}></View>
             );

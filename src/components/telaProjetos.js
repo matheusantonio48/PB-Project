@@ -41,6 +41,9 @@ export default class telaProjetos extends Component {
             componentes: [],
             isLoading: false,
             displayIcon: false,
+            projeto1: false,
+            projeto2: false,
+            projeto3: false,
             nome: null,
             organizacao: this.props.organizacao,
             usuario: this.props.login
@@ -148,6 +151,16 @@ export default class telaProjetos extends Component {
         });
     }
 
+    displayIcon = (idProjeto) => {
+        if (idProjeto === 19186) {
+            this.setState({projeto1: !this.state.projeto1, projeto2: true, projeto3: true})
+        } else if (idProjeto === 19707) {
+            this.setState({ projeto2: !this.state.projeto2, projeto1: true, projeto3: true})
+        } else if (idProjeto === 21399) {
+            this.setState({ projeto3: !this.state.projeto3, projeto2: true, projeto1: true})
+        }
+    }
+
     render() {
         return (
             <Container>
@@ -249,24 +262,25 @@ export default class telaProjetos extends Component {
                                                     </Text>
                                                 </View>
 
-                                                {this.state.displayIcon !== true ?
+                                                {this.state.projeto1 !== true
+                                                ?
+                                                <View>
                                                     <View style={{ marginLeft: wp('12%') }}>
                                                         <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
                                                     </View>
-                                                    :
-                                                    <View></View>
+                                                </View> : <View></View>
                                                 }
 
                                             </View>
                                         </View>
 
                                         <Collapse isCollapsed={this.state.collapsed}
-                                            onToggle={(isCollapsed) => this.setState({ displayIcon: isCollapsed })} style={{
+                                            onToggle={() => this.displayIcon(item.id)} style={{
                                                 paddingTop: 5,
                                                 width: wp('100%')
                                             }}>
                                             <CollapseHeader style={{ paddingLeft: '3%' }}>
-                                                {this.state.displayIcon !== true ?
+                                                {this.state.projeto1 !== true ?
                                                     <View style={{ flex: 1, alignItems: 'center' }}>
                                                         <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={require('../img/seta-abrir-atividades.png')} />
                                                     </View>
