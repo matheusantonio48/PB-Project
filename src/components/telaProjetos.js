@@ -35,15 +35,17 @@ export default class telaProjetos extends Component {
     constructor(props) {
         super(props);
 
+        this.icons = {     //Step 2
+            'up': require('../img/seta-abrir-atividades.png'),
+            'down': require('../img/seta-fechar-atividades.png')
+        };
+
         this.state = {
             projetos: [],
             collapsed: false,
             componentes: [],
+            icons: [],
             isLoading: false,
-            displayIcon: false,
-            projeto1: false,
-            projeto2: false,
-            projeto3: false,
             nome: null,
             organizacao: this.props.organizacao,
             usuario: this.props.login
@@ -151,14 +153,48 @@ export default class telaProjetos extends Component {
         });
     }
 
-    displayIcon = (idProjeto) => {
-        if (idProjeto === 19186) {
-            this.setState({projeto1: !this.state.projeto1, projeto2: true, projeto3: true})
-        } else if (idProjeto === 19707) {
-            this.setState({ projeto2: !this.state.projeto2, projeto1: true, projeto3: true})
-        } else if (idProjeto === 21399) {
-            this.setState({ projeto3: !this.state.projeto3, projeto2: true, projeto1: true})
+    addInArray(id) {
+        this.state.icons.push({
+            'icons': [id, this.icons.up, false]
+        })
+        console.log(this.state.icons)
+    }
+
+    getIcons(id_item) {
+        for (i = 0; i < this.state.icons.length; i++) {
+            if (this.state.icons[i].icons[0] === id_item) {
+                return this.state.icons[i].icons[1]
+            }
         }
+        return this.icons.up
+    }
+
+    setIcon(id) {
+        const newArray = this.state.icons;
+        console.log(newArray)
+        for (i = 0; i < newArray.length; i++) {
+            if (newArray[i].icons[0] === id) {
+                if (newArray[i].icons[2] === false) {
+                    newArray[i].icons[1] = this.icons.down
+                    newArray[i].icons[2] = true
+                    this.setState({ icons: newArray });
+                } else if (newArray[i].icons[2] === true) {
+                    newArray[i].icons[1] = this.icons.up
+                    newArray[i].icons[2] = false
+                    this.setState({ icons: newArray });
+                }
+            }
+        }
+        return true
+    }
+
+    getCollapse(id_item){
+        for (i=0;i<this.state.icons.length;i++){
+            if(this.state.icons[i].icons[0] === id_item){
+                return this.state.icons[i].icons[2]
+            }
+        }
+        return this.icons.up
     }
 
     render() {
@@ -207,6 +243,7 @@ export default class telaProjetos extends Component {
                                 <View style={{ backgroundColor: '#dcdcdc' }}>
                                     <TouchableOpacity onPress={() => this.mudaTelaRegistroProjeto(item, item.componentes)}>
                                         <View style={{ paddingLeft: 15 }}>
+                                            {this.addInArray(item.id)}
                                             <View style={{
                                                 flex: 1,
                                                 backgroundColor: '#dcdcdc',
@@ -274,20 +311,14 @@ export default class telaProjetos extends Component {
                                             </View>
                                         </View>
 
-                                        <Collapse style={{
+                                        <Collapse isCollapsed={this.getCollapse(item.id)} onToggle={()=>this.setIcon(item.id)} style={{
                                                 paddingTop: 5,
                                                 width: wp('100%')
                                             }}>
                                             <CollapseHeader style={{ paddingLeft: '3%' }}>
-                                                {this.state.displayIcon !== true ?
                                                     <View style={{ flex: 1, alignItems: 'center' }}>
-                                                        <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={require('../img/seta-abrir-atividades.png')} />
+                                                    <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={this.getIcons(item.id)} />
                                                     </View>
-                                                    :
-                                                    <View style={{ flex: 1, alignItems: 'center' }}>
-                                                        <Image style={{ width: wp('5%'), height: hp('1.6%') }} source={require('../img/seta-fechar-atividades.png')} />
-                                                    </View>
-                                                }
                                             </CollapseHeader>
 
                                             <CollapseBody style={{
