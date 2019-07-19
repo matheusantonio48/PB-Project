@@ -37,7 +37,8 @@ export default class telaProjetos extends Component {
 
         this.icons = {     //Step 2
             'up': require('../img/seta-abrir-atividades.png'),
-            'down': require('../img/seta-fechar-atividades.png')
+            'down': require('../img/seta-fechar-atividades.png'),
+            'right': require('../img/seta-avancar-preta.png')
         };
 
         this.state = {
@@ -155,9 +156,9 @@ export default class telaProjetos extends Component {
 
     addInArray(id) {
         this.state.icons.push({
-            'icons': [id, this.icons.up, false]
+            'icons': [id, this.icons.up, false, this.icons.right]
         })
-        console.log(this.state.icons)
+        // console.log(this.state.icons)
     }
 
     getIcons(id_item) {
@@ -169,17 +170,29 @@ export default class telaProjetos extends Component {
         return this.icons.up
     }
 
+    getIconRight(id_item) {
+        for (i = 0; i < this.state.icons.length; i++) {
+            if (this.state.icons[i].icons[0] === id_item) {
+                return this.state.icons[i].icons[3]
+            }
+        }
+        return this.icons.up
+    }
+
     setIcon(id) {
         const newArray = this.state.icons;
         console.log(newArray)
         for (i = 0; i < newArray.length; i++) {
             if (newArray[i].icons[0] === id) {
                 if (newArray[i].icons[2] === false) {
+                    console.log(newArray[i].icons[1]);
                     newArray[i].icons[1] = this.icons.down
+                    newArray[i].icons[3] = null
                     newArray[i].icons[2] = true
                     this.setState({ icons: newArray });
                 } else if (newArray[i].icons[2] === true) {
                     newArray[i].icons[1] = this.icons.up
+                    newArray[i].icons[3] = this.icons.right
                     newArray[i].icons[2] = false
                     this.setState({ icons: newArray });
                 }
@@ -303,7 +316,7 @@ export default class telaProjetos extends Component {
                                                 ?
                                                 <View>
                                                     <View style={{ marginLeft: wp('12%') }}>
-                                                        <Image style={estilo.icoSeta} source={require('../img/seta-avancar-preta.png')} />
+                                                            <Image style={estilo.icoSeta} source={this.getIconRight(item.id)} />
                                                     </View>
                                                 </View> : <View></View>
                                                 }
