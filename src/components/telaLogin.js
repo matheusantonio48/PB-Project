@@ -16,6 +16,10 @@ import { Container, Header, Content, Item, Input, Icon } from 'native-base';
 
 import axios from '../services/axios';
 
+import * as messages from './MessageClass'
+
+import * as constants from './ConstantClass'
+
 import {
     StyleSheet,
     View,
@@ -30,13 +34,13 @@ import {
 
 // http://179.107.43.8:8080/apiPb/api/login
 export default class telaLogin extends Component {
-    updateValue(text, field) {
+    /*updateValue(text, field) {
         if (field == 'texto') {
             this.setState({
                 texto: text
             })
         }
-    }
+    }*/
 
     static propTypes = {
         navigation: PropTypes.shape({
@@ -106,7 +110,7 @@ export default class telaLogin extends Component {
 
     handleSignInPress = async () => {
         if (this.state.login.length === 0 || this.state.senha.length === 0) {
-            this.setState({ erro: 'Preencha usuário e senha para continuar.' }, () => false);
+            this.setState({erro: messages.loginErr }, () => false);
         } else {
             try {
                 let url = '/login?apiName=' + this.state.organizacao + "/" + this.state.login + "&apiKey=" + this.state.senha;
@@ -127,7 +131,7 @@ export default class telaLogin extends Component {
                 Actions.TelaProjetos({ organizacao: this.state.organizacao, login: this.state.login });
                 // this.props.navigation.dispatch(resetAction);
             } catch (err) {
-                this.setState({ erro: 'Houve um problema com o login, verifique suas credenciais.' });
+                this.setState({ erro: messages.credErr });
             }
         }
     };
@@ -140,11 +144,11 @@ export default class telaLogin extends Component {
                 <StatusBar hidden />
                 <Container style={estilo.body}>
                     <View style={estilo.header}>
-                        <Image style={estilo.logo} source={require('../img/logo-e-titulo-login-pb.png')} />
+                        <Image style={estilo.logo} source = {constants.pbLoginLogoImage} />
                     </View>
                         <View>
                             <Item>
-                                <Image style={estilo.iconForm} source={require('../img/ico-login-organizacao.png')} />
+                                <Image style={estilo.iconForm} source={constants.pbOrgIcon} />
                                 <Input
                                     style={{
                                         width: wp('50%'),
@@ -169,7 +173,7 @@ export default class telaLogin extends Component {
                             </Item>
 
                             <Item>
-                                <Image style={estilo.iconForm} source={require('../img/ico-login-identificacao.png')} />
+                                <Image style={estilo.iconForm} source={constants.pbIdIcon} />
                                 <Input
                                     style={{
                                         width: wp('50%'),
@@ -195,7 +199,7 @@ export default class telaLogin extends Component {
                             </Item>
 
                             <Item>
-                                <Image style={estilo.iconForm} source={require('../img/ico-login-senha.png')} />
+                                <Image style={estilo.iconForm} source={constants.pbPassIcon} />
                                 <Input
                                     secureTextEntry={true}
                                     style={{
@@ -226,7 +230,7 @@ export default class telaLogin extends Component {
                             <TouchableOpacity onPress={this.handleSignInPress} >
                                 <Image
                                     style={estilo.buttonStyle}
-                                    source={require('../img/bt-entrar.png')} />
+                                    source={constants.pbLoginBtn} />
                             </TouchableOpacity>
 
                         <View style={{ height: 100 }} />
