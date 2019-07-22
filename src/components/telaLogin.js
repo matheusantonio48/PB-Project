@@ -16,9 +16,11 @@ import { Container, Header, Content, Item, Input, Icon } from 'native-base';
 
 import axios from '../services/axios';
 
-import * as messages from './MessageClass'
+import * as messageClass from './MessageClass'
 
-import * as constants from './ConstantClass'
+import * as constantClass from './ConstantClass'
+
+import { TextField } from 'react-native-material-textfield';
 
 import {
     StyleSheet,
@@ -55,42 +57,42 @@ export default class telaLogin extends Component {
         senha: '',
         erro: '',
         data: '',
-        borderColorOrganizacao: '#e5e5e5',
-        borderColorIdentificacao: '#e5e5e5',
-        borderColorSenha: '#e5e5e5'
+        borderColorOrganizacao: constantClass.colors.gray,
+        borderColorIdentificacao: constantClass.colors.gray,
+        borderColorSenha: constantClass.colors.gray
     }
 
     onFocusOrganizacao() {
         this.setState({
-            borderColorOrganizacao: '#64d4ff'
+            borderColorOrganizacao: constantClass.colors.blue
         })
     }
 
     onFocusIdentificacao() {
         this.setState({
-            borderColorIdentificacao: '#64d4ff'
+            borderColorIdentificacao: constantClass.colors.blue
         })
     }
     onFocusSenha() {
         this.setState({
-            borderColorSenha: '#64d4ff'
+            borderColorSenha: constantClass.colors.blue
         })
     }
 
     onBlurOrganizacao() {
         this.setState({
-            borderColorOrganizacao: '#e5e5e5'
+            borderColorOrganizacao: constantClass.colors.gray
         })
     }
 
     onBlurIdentificacao() {
         this.setState({
-            borderColorIdentificacao: '#e5e5e5'
+            borderColorIdentificacao: constantClass.colors.gray
         })
     }
     onBlurSenha() {
         this.setState({
-            borderColorSenha: '#e5e5e5'
+            borderColorSenha: constantClass.colors.gray
         })
     }
 
@@ -110,7 +112,7 @@ export default class telaLogin extends Component {
 
     handleSignInPress = async () => {
         if (this.state.login.length === 0 || this.state.senha.length === 0) {
-            this.setState({erro: messages.loginErr }, () => false);
+            this.setState({erro: messageClass.message.loginErr }, () => false);
         } else {
             try {
                 let url = '/login?apiName=' + this.state.organizacao + "/" + this.state.login + "&apiKey=" + this.state.senha;
@@ -131,7 +133,7 @@ export default class telaLogin extends Component {
                 Actions.TelaProjetos({ organizacao: this.state.organizacao, login: this.state.login });
                 // this.props.navigation.dispatch(resetAction);
             } catch (err) {
-                this.setState({ erro: messages.credErr });
+                this.setState({ erro: messageClass.message.credErr });
             }
         }
     };
@@ -139,41 +141,41 @@ export default class telaLogin extends Component {
     render() {
         return (
             <KeyboardAvoidingView
-            style={estilo.principal}
+            style={constantClass.loginStyles.principal}
             behavior="padding">
                 <StatusBar hidden />
-                <Container style={estilo.body}>
-                    <View style={estilo.header}>
-                        <Image style={estilo.logo} source = {constants.pbLoginLogoImage} />
+                <Container style={constantClass.loginStyles.body}>
+                    <View style={constantClass.loginStyles.header}>
+                        <Image style={constantClass.loginStyles.logo} source = {constantClass.images.pbLoginLogoImage} />
                     </View>
                         <View>
                             <Item>
-                                <Image style={estilo.iconForm} source={constants.pbOrgIcon} />
-                                <Input
+                                <Image style={constantClass.loginStyles.iconForm} source={constantClass.images.pbOrgIcon} />
+                                <Input 
                                     style={{
-                                        width: wp('50%'),
+                                        width: wp('90%'),
+                                        marginTop: hp('2%'),
+                                        borderWidth: 1,
                                         paddingLeft: wp('5%'),
                                         height: 55,
                                         borderRadius: 10,
                                         borderStyle: 'solid',
                                         borderColor: this.state.borderColorOrganizacao,
-                                        borderWidth: 1,
                                         marginTop: 10,
                                         overflow: 'hidden',
-                                        fontSize: 16
+                                        fontSize: 16,
+                                        flex :1
                                     }}
                                     underlineColorAndroid='transparent'
                                     value={this.state.organizacao}
-                                    onFocus={() => this.onFocusOrganizacao()}
-                                    onBlur={() => this.onBlurOrganizacao()}
                                     onChangeText={this.handleOrganizationChange}
-                                autoCapitalize="none"
+                                    autoCapitalize="none"
                                     placeholder="Organização"
                                     placeholderTextColor="#9d9d9d" />
                             </Item>
-
+                                    
                             <Item>
-                                <Image style={estilo.iconForm} source={constants.pbIdIcon} />
+                                <Image style={constantClass.loginStyles.iconForm} source={constantClass.images.pbIdIcon} />
                                 <Input
                                     style={{
                                         width: wp('50%'),
@@ -199,7 +201,7 @@ export default class telaLogin extends Component {
                             </Item>
 
                             <Item>
-                                <Image style={estilo.iconForm} source={constants.pbPassIcon} />
+                                <Image style={constantClass.loginStyles.iconForm} source={constantClass.images.pbPassIcon} />
                                 <Input
                                     secureTextEntry={true}
                                     style={{
@@ -225,12 +227,12 @@ export default class telaLogin extends Component {
                             </Item>
 
 
-                            <Text style={estilo.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
+                            <Text style={constantClass.loginStyles.mensagemErro}>{this.state.erro.length !== 0 && this.state.erro}</Text>
 
                             <TouchableOpacity onPress={this.handleSignInPress} >
                                 <Image
-                                    style={estilo.buttonStyle}
-                                    source={constants.pbLoginBtn} />
+                                    style={constantClass.loginStyles.buttonStyle}
+                                    source={constantClass.images.pbLoginBtn} />
                             </TouchableOpacity>
 
                         <View style={{ height: 100 }} />
@@ -245,7 +247,7 @@ export default class telaLogin extends Component {
         );
     }
 }
-const estilo = StyleSheet.create({
+/*const estilo = StyleSheet.create({
     entrada: {
         width: wp('50%'),
         paddingLeft: wp('5%'),
@@ -331,4 +333,4 @@ const estilo = StyleSheet.create({
         resizeMode: 'contain'
     }
 
-});
+});*/
