@@ -197,7 +197,7 @@ export default class telaRegistros extends Component {
                                     </View>
                                 </View>
                             </CardItem>
-                            <CardItem>
+                            <CardItem style = {{backgroundColor:'#f4f4f4'}}>
                                 <View style={{
                                     flex: 1,
                                     flexDirection: 'row'
@@ -235,7 +235,7 @@ export default class telaRegistros extends Component {
                                         <View key={key}>
                                             {item !== undefined && item.descricao !== '' && item.descricao !== undefined && item.descricao !== null ?
                                                 <CardItem style={{
-                                                    backgroundColor: '#f4f4f4',
+                                                    backgroundColor: '#ffffff',
                                                     borderBottomColor: '#c1c1c1',
                                                     borderBottomWidth: 1.0
                                                 }}>
