@@ -144,12 +144,23 @@ export default class telaRegistros extends Component {
                     <Text style={{
                         fontWeight: '900',
                         color: '#313131',
-                        backgroundColor: '#c9c7c7',
+                        backgroundColor: '#f4f4f4',
                         fontSize: 20,
                         paddingLeft: '3%',
                         paddingTop: hp('2%'),
                         paddingBottom: hp('2%')
                     }}>REGISTROS DO PROJETO</Text>
+
+                    <Text style={{
+                        fontWeight: '900',
+                        color: '#313131',
+                        backgroundColor: '#c9c7c7',
+                        fontSize: 15,
+                        paddingLeft: '3%',
+                        paddingTop: hp('2%'),
+                        paddingBottom: hp('2%')
+                    }}>Teste</Text>
+
                     <View>
 
                         {/* <TouchableOpacity onPress={() => this.telaProjetos()}>
