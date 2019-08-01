@@ -149,12 +149,12 @@ export default class telaRegistros extends Component {
                         paddingLeft: '3%',
                         paddingTop: hp('2%'),
                         paddingBottom: hp('2%')
-                    }}>REGISTROS DO PROJETO</Text>
+                    }}>REGISTROS</Text>
 
                     <Text style={{
                         fontWeight: '900',
                         color: '#313131',
-                        backgroundColor: '#c9c7c7',
+                        backgroundColor: '#DCDCDC',
                         fontSize: 15,
                         paddingLeft: '3%',
                         paddingTop: hp('2%'),
